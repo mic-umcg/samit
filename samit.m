@@ -252,6 +252,11 @@ switch val
             set(handles.tag_SUVtools_Create,'Enable','on');
         end
     case 3
+        handles.type = 'kBq';
+        if handles.gs > 0
+            set(handles.tag_SUVtools_Create,'Enable','on');
+        end
+    case 4
         handles.type = 'MBq';
         if handles.gs > 0
             set(handles.tag_SUVtools_Create,'Enable','on');

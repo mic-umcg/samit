@@ -1,23 +1,20 @@
-function samit_createSUV(type,gs,infile,d)
-%   Construct SUV images with the information provided in the Tab file
-%   (a template of this file can be created with 'samit_tableSUV.m')
+function samit_standarize(infile,units,gs,d)
+%   Construct standarized images with the information provided in the Tab file
+%   (SUV, SUV whole brain corrected, or %ID/g)
 %   FORMAT samit_createSUV(type,gs,infile,d)
-%       type    - Defines the image units
-%                 'Bq'  for Bq/cc
-%                 'kBq' for kBq/cc
-%                 'MBq' for MBq/cc
+%       infile  - File with the SUV information (*.txt or *.xls)
+%       units   - Defines output image units
+%                 'SUV'  Standarized Uptake Value
+%                 'SUVw' SUV corrected for whole brain uptake
+%                 'IDg'  % Injected dose per gram
 %       gs      - Basal glucose level
-%       file    - File with the SUV table (*.txt or *.xls)
 %       d       - Display (default: true)
 %
 %   Expected units of uPET images are Bq/cc, and for uSPECT MBq/cc.
-%   The variable 'type' is used to specify if the data
-%   in the table file needs to be, or not, converted from MBq to Bq, since
-%   the information from the SUV table is expected in MBq.
 %   Extra information about the SPECT acquisition and its conversion to MBq
 %   can be found at DOI 10.1007/s00259-010-1519-9
 
-%   Version: 15.02 (04 February 2015)
+%   Version: 15.02 (17 September 2014)
 %   Author:  David Vállez Garcia
 %   Email:   dvallezgarcia=gmail*com
 %   Real_email = regexprep(Email,{'=','*'},{'@','.'})
@@ -35,7 +32,7 @@ end
 if d ~= false
     display(' ');
     display('SAMIT: Creating SUV images...');
-    display('-----------------------------');
+    display('----------------------------------------');
 end
 
 % Obtain table file
@@ -111,11 +108,9 @@ for i = 1:nfiles
     % Dose & Weight
     switch type
         case 'Bq'
-            d = (num(i,1)*10^6); % Injected dose (MBq), image (Bq/cc)
-        case 'kBq'
-            d = (num(i,1)*10^3); % Injected dose (MBq), image (kBq/cc)
+            d = (num(i,1)*10^6); % Injected dose (MBq), converted to Bq like in the image (Bq/cc)
         case 'MBq'
-            d = num(i,1);        % Injected dose (MBq), image (MBq/cc)
+            d = num(i,1);        % Injected dose (MBq), image (MBq/cc). No conversion needed
     end
     
     w = num(i,2);               % Weight of the animal (grams)

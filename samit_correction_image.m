@@ -1,10 +1,10 @@
 function samit_correction_image(ref_file, work_files)    
 %   Divide the voxel value of the image, by the value of the reference
-%   FORMAT samit_correction_image(P1
+%   FORMAT samit_correction_image(ref_file, work_file)
 %       ref_file    Reference image (e.g. Mean image of control group)
 %       work_files  List of files to which apply the correction
 
-%   Version: 14.11 (26 November 2014)
+%   Version: 15.11 (26 November 2014)
 %   Author:  David Vállez Garcia
 %   Email:   dvallezgarcia=gmail*com
 %   Real_email = regexprep(Email,{'=','*'},{'@','.'})
