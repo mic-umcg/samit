@@ -22,6 +22,6 @@ title:
 		}
 </script>
 
-Or you can download if from [here]({{ site.github.repo }}/archive/v{{ site.version }}.zip)
+Or you can download if from [here]({{ site.github.repo }}/archive/{{ site.version }}.zip)
 
-Currently v{{ site.version }}
+Currently {{ site.version }}

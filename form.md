@@ -29,4 +29,5 @@ It is helpful for us to know about the potential users of the toolbox. Therefore
   <input type="submit" value="Send form">
   <input type="hidden" name="_next" value="{{ site.baseurl }}/download" />
   <input type="text" name="_gotcha" style="display:none" />
+  <input type="hidden" name="_cc" value="d.vallez-garcia@umcg.nl" />
 </form>
