@@ -4,7 +4,7 @@ title:
 ---
 <script type="text/javascript" src="{{ site.baseurl }}/js/download.js"> </script>
 
-<p id="downloadLabel">SAMIT software {{ site.version }} will start downloading automatically in 5 seconds...</p>
+<p id="downloadLabel">SAMIT software ({{ site.version }}) will start downloading automatically in 5 seconds...</p>
 <script>
 	var secondsBeforeDownloading = 5;
 	var timerInterval = setInterval('setDownloadText()', 1000);
@@ -12,11 +12,11 @@ title:
 			var label = document.getElementById('downloadLabel');
 
 			if (secondsBeforeDownloading === 0){
-                label.innerHTML = 'SAMIT software will start download: Done!!';
-				downloadFile('{{ site.github.repository_url }}/archive/v{{ site.version }}.zip');
+                label.innerHTML = 'SAMIT software ({{ site.version }}) downloaded!!';
+				downloadFile('{{ site.github.repository_url }}/archive/{{ site.version }}.zip');
 				clearInterval(timerInterval);
 			} else {
-				label.innerHTML = 'SAMIT software will start downloading automatically in ' + secondsBeforeDownloading + ' seconds...';
+				label.innerHTML = 'SAMIT software ({{ site.version }}) will start downloading automatically in ' + secondsBeforeDownloading + ' seconds...';
 				secondsBeforeDownloading--;
 			}
 		}
