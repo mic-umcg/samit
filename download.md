@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: page
 title:
 ---
 <script type="text/javascript" src="{{ site.baseurl }}/js/download.js"> </script>

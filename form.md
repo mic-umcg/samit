@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: page
 title: Download registration form
 ---
 
@@ -11,7 +11,7 @@ It is helpful for us to know about the potential users of the toolbox. Therefore
 * Any additional comments are will be emailed directly to the developers of the toolbox.
 * Submitting the form will take you to the page with the latest version of the SAMIT software.
 
-<form action="http://formspree.io/samit@ngmb.umcg.nl" method="POST">
+<form action="http://formspree.io/samit@umcg.nl" method="POST">
   First name:  <input type="text" name="firstname"> <br>
   Last name:   <input type="text" name="lastname"> <br>
   Institution: <input type="text" name="institute"> <br>
