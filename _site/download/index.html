@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+       &middot; SAMIT
+    
+  </title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/public/css/poole.css">
+  <link rel="stylesheet" href="/public/css/syntax.css">
+  <link rel="stylesheet" href="/public/css/lanyon.css">
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=PT+Serif:400,400italic,700%7CPT+Sans:400">
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-precomposed.png">
+  <link rel="shortcut icon" href="public/favicon.ico">
+
+</head>
+
+
+  <body>
+
+    <!-- Target for toggling the sidebar `.sidebar-checkbox` is for regular
+     styles, `#sidebar-checkbox` for behavior. -->
+<input type="checkbox" class="sidebar-checkbox" id="sidebar-checkbox">
+
+<!-- Toggleable sidebar -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-item">
+    <p>The aim of this toolbox is to facilitate the construction of new tracer specific templates and the subsequent voxel-based analysis of small animal PET and SPECT brain images.</p>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a class="sidebar-nav-item" href="">Home</a>
+
+    
+
+    
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+    
+      
+        
+          <a class="sidebar-nav-item" href="/form/">Download registration form</a>
+        
+      
+    
+      
+        
+      
+    
+
+	<a class="sidebar-nav-item" href="">SAMIT in GitHub</a>
+	<a class="sidebar-nav-item" href="http://dx.doi.org/10.5281/zenodo.14785">
+		SAMIT in Zenodo<br>
+		<img src="/images/zenodo.14785.svg" alt="10.5281/zenodo.14785"></a>
+ 	
+	
+  </nav>
+
+  <div class="sidebar-item">
+    <p>
+      &copy; 2015. All rights reserved.
+    </p>
+  </div>
+</div>
+
+
+    <!-- Wrap is the content to shift when toggling the sidebar. We wrap the
+         content to avoid any CSS collisions with our real content. -->
+    <div class="wrap">
+      <div class="masthead">
+        <div class="container">
+          <h3 class="masthead-title">
+            <a href="/" title="Home">SAMIT</a>
+            <small>Small Animal Molecular Imaging Toolbox</small>
+          </h3>
+        </div>
+      </div>
+
+      <div class="container content">
+        <div class="page">
+  <h1 class="page-title"></h1>
+  <script type="text/javascript" src="/js/download.js"> </script>
+
+<p id="downloadLabel">SAMIT software will start downloading automatically in 5 seconds...</p>
+
+<script>
+    var secondsBeforeDownloading = 5;
+    var timerInterval = setInterval('setDownloadText()', 1000);
+        var setDownloadText = function() {
+            var label = document.getElementById('downloadLabel');
+
+            if (secondsBeforeDownloading === 0){
+                label.innerHTML = 'SAMIT software will start download: Done!!';
+                downloadFile('/archive/vv1.0.1.zip');
+                clearInterval(timerInterval);
+            } else {
+                label.innerHTML = 'SAMIT software will start downloading automatically in ' + secondsBeforeDownloading + ' seconds...';
+                secondsBeforeDownloading--;
+            }
+        }
+</script>
+
+<p>Or you can download if from <a href="/archive/v1.0.1.zip">here</a></p>
+
+<p>Currently v1.0.1</p>
+
+</div>
+
+      </div>
+	  
+	  <footer role="contentinfo">
+  <div class="grid">
+    <div class="unit two-third">
+		<p>The contents of this website are &copy;&nbsp;2015 under the terms of the <a href="https://github.com/dvallezgarcia/samit/blob/master/LICENSE">GNU GPL v3.0 License</a>.<br>
+		<a href="http://ngmb.umcg.nl/">Nuclear Medicine and Molecular Imaging at the UMCG</a>
+		</p>
+	</div>
+    
+	<div class="unit one-third">
+      <p>
+	  Hosted by<a href="https://github.com">
+          <img src="/images/footer-logo.png" width="100" height="30" alt="GitHub • Social coding"></a>
+	  </p>
+    </div>
+  </div>
+</footer> 
+	  
+    </div>
+	
+    <label for="sidebar-checkbox" class="sidebar-toggle"></label>
+
+    <script>
+      (function(document) {
+        var toggle = document.querySelector('.sidebar-toggle');
+        var sidebar = document.querySelector('#sidebar');
+        var checkbox = document.querySelector('#sidebar-checkbox');
+
+        document.addEventListener('click', function(e) {
+          var target = e.target;
+
+          if(!checkbox.checked ||
+             sidebar.contains(target) ||
+             (target === checkbox || target === toggle)) return;
+
+          checkbox.checked = false;
+        }, false);
+      })(document);
+    </script>
+	
+  </body>
+  
+</html>
