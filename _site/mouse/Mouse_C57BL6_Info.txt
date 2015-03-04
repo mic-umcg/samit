@@ -1,0 +1,16 @@
+Adult C57BL/6J Mouse Brain
+==========================
+
+• Mouse brain condition: Normal
+• Mouse gender: Male
+• Mouse age: 12 weeks
+• Number of individual mouse brains averaged: 12
+
+References:
+
+- Ma, Y. et al., 2005. A three-dimensional digital atlas database of the adult C57BL/6J mouse brain by magnetic resonance microscopy. Neuroscience, 135(4), pp.1203–15.
+- Ma, Y. et al., 2008. In Vivo 3D Digital Atlas Database of the Adult C57BL/6J Mouse Brain by Magnetic Resonance Microscopy. Frontiers in neuroanatomy, 2(April), p.1.
+
+Website:
+
+http://brainatlas.mbi.ufl.edu/
