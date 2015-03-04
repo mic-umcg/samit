@@ -12,13 +12,14 @@ relative_permalinks: true
 title:               SAMIT
 tagline:             'Small Animal Molecular Imaging Toolbox'
 description:         'The aim of this toolbox is to facilitate the construction of new tracer specific templates and the subsequent voxel-based analysis of small animal PET and SPECT brain images.'
+url:                 http://dvallezgarcia.github.io/samit
 baseurl:             /samit
 paginate:            5
 
 # About/contact
 author:
   name:              David Vállez
-  email:             samit@umcg.nl
+  email:             samit@ngmb.umcg.nl
 
 # Custom vars
 version:             1.0.1
