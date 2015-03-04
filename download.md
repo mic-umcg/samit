@@ -1,8 +1,8 @@
 ---
-layout: page
+layout: default
 title:
 ---
-<script type="text/javascript" src="/js/download.js"> </script>
+<script type="text/javascript" src="{{ site.baseurl }}/js/download.js"> </script>
 
 <p id="downloadLabel">SAMIT software will start downloading automatically in 5 seconds...</p>
 <script>
