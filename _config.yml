@@ -1,0 +1,33 @@
+# Dependencies
+markdown:            redcarpet
+highlighter:         pygments
+
+# Permalinks
+#
+# Use of `relative_permalinks` ensures post links from the index work properly.
+permalink:           pretty
+relative_permalinks: true
+
+# Setup
+title:               SAMIT
+tagline:             'Small Animal Molecular Imaging Toolbox'
+description:         'The aim of this toolbox is to facilitate the construction of new tracer specific templates and the subsequent voxel-based analysis of small animal PET and SPECT brain images.'
+url:                 http://dvallezgarcia.github.io
+baseurl:             "/samit"
+paginate:            5
+
+# About/contact
+author:
+  name:              David Vállez
+  email:             samit@umcg.nl
+
+# Custom vars
+version:             v1.0.1
+zenodo:              https://zenodo.org/record/14785
+
+# Exclude these files from _site
+exclude:
+    - Gemfile
+    - Gemfile.lock
+    - LICENSE
+    - README.md
