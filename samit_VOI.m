@@ -7,13 +7,16 @@ function samit_VOI(specie)
 %                 'rat' (Default)
 %                 'mouse'
 
-%   Version: 14.12.02 (02 December 2014)
-%   Author:  David Vállez Garcia
-%   Email:   dvallezgarcia=gmail*com
-%   Real_email = regexprep(Email,{'=','*'},{'@','.'})
+%   Version: 12.03.24 (12 March 2015)
+%   Author:  David Vallez Garcia
+%   Email:   samit@umcg.nl
 
 %   Tested with SPM8 & SPM12
-% v14.11.28:    Images are masked using spm_imcalc
+%   v14.11.28:    Images are masked using spm_imcalc
+%   v15.02.24:    Calculation is done using spm_summarise
+%   v15.03.12:    Adjustment for SPM8 compatibility
+
+
 
 %% Display
 display(' ');
@@ -34,31 +37,40 @@ VOIs = spm_select(1,'image','Please, select the image containing the VOIs...');
 
 if ~isempty(VOIs)
     
-    VOIs_vol = spm_vol(VOIs);                   % Vol VOI
-    VOIs_dat = spm_read_vols(VOIs_vol);         % Data VOI
-    VOIs_v   = unique(VOIs_dat);                % Array with numbers in VOI image
-    VOIs_v   = VOIs_v(2:end);                   % Number zero is removed
-    VOIs_num = size(VOIs_v,1);                  % Num regions in VOI
-
+    VOIs_v   = unique(spm_read_vols(spm_vol(VOIs))); % Array with numbers in VOI image
+    
+    if isequal(VOIs_v(1),0)
+        VOIs_v = VOIs_v(2:end);                      % Number zero is removed
+    end 
+        
     % Load the names for each VOI
-    VOIs_txt = spm_file(VOIs,'ext','.txt');     % Name of VOIs regions
-    if ~exist(VOIs_txt,'file')
-       display('Operation cancelled: The text file with the associated names of the VOIs was not found');
-       return
-    else
+    VOIs_txt = spm_file(VOIs,'ext','.txt');
+    
+    if ~exist(VOIs_txt,'file')  % If there is no file with the name of each region
+       for c=1:size(VOIs_v,1)
+           C{c,1} = ['VOI_',num2str(c)];
+       end
+       VOIs_names = ['Whole_brain'; C];
+    else                        % If there is a file with the info
         fid = fopen(VOIs_txt);
         C = textscan(fid, '%d %s', 'Delimiter', '\t', 'CommentStyle', '#');
         fclose(fid);
         VOIs_names = ['Whole_brain'; C{2}];
     end
-else % If no VOI file is selected
-    VOIs_num = 0;    % Num regions in VOI
+    
+    nvois = size(VOIs_v,1) + 1;        % Number of VOIs + Whole Brain
+    
+   
+else % Only the whole brain VOI will be used if no file was selected
     VOIs_names = {'Whole_brain'};
+    nvois =  1;                        % Only Whole Brain
 end
+
 
 %% Whole brain VOI
 samit_def = samit_defaults(specie);
 mask = samit_def.mask;
+clear samit_def;
 
 %% Files to analyze
 files = spm_select(Inf,'image','Please, select the images to be analysed.');
@@ -68,114 +80,85 @@ if isempty(files)   % Error check
 end
 
 %% Name to store the results
-[results_name, results_path] = uiputfile('*.xls', 'New file to store the results...');
+[results_name, results_path] = uiputfile('*.txt', 'New file to store the results...');
 % Error check
 if isequal(results_name,0) || isequal(results_path,0)
     display('Operation cancelled: Output file was not specified.');
     return
 end
-[~, results_name] = fileparts(results_name);   % Avoid the use of the extension as part of the name
+results_name = spm_file(results_name,'basename');  % Removes the extension
 
 %% Initialize variables
+nfiles = size(files,1);                            % Number of files to analyse
+M = zeros(nvois,4,nfiles);                         % Matrix with results
+temp = 'temp_img.nii';
 
-n_vois = VOIs_num + 1;                              % Number of VOIs + Whole brain
-nfiles = size(files,1);                             % Number of files to analyse
-voi_results = cell(8, n_vois);                       % Columns per file
-
-M = zeros(nfiles,n_vois);                           % Table with results (used to calculate 'F')
-M_corr = zeros(nfiles,n_vois);                      % Table with corrected results (used to calculate 'F')
-F = zeros(4,n_vois);                                % Final table with results (mean & SD)
-T = struct('name','results');                       % Structure with all individual results
-
-
-%% Waitbar
-w1 = 'Calculating VOIs data: ';
+%% Start Progress bar
+w1 = 'Extracting VOIs data: ';
 multiWaitbar('CloseAll');
 multiWaitbar(w1);
 
 %% Evaluation of the VOIs
-for f = 1:nfiles
+
+for v=1:nvois   
+    multiWaitbar(w1, 'Value', v/(nvois));    % Waitbar
     
-    multiWaitbar(w1, 'Value', f/(nfiles+1));    % Waitbar
-       
-    % Extract info from the whole brain and VOIs
-    for a = 1:n_vois        
-               
-        % Apply VOI as a mask to calculate the values
-        % Selection of the VOI or Wholebrain
-        if a == 1   % Whole brain mask                                   
-            spm_imcalc({files(f,:); mask},'test.nii','(i2==1) .* i1');
-            tmp_dat = spm_read_vols(spm_vol('test.nii'));
-            tmp_dat = single(tmp_dat);
-            
-        else        % VOIs
-            v = VOIs_v(a-1);    % Index of the VOI to be masked
-            spm_imcalc({files(f,:); VOIs},'test.nii','(i2==v) .* i1',{},v);
-            tmp_dat = spm_read_vols(spm_vol('test.nii'));
-            tmp_dat = single(tmp_dat);
-        end                    
+    if isequal(v,1)
+        Vo = mask;
+        r = 0;  % Init counter
+        r = double(r);
+    else
+        Vo = temp;
+        r = r + 1;
         
-        voi_results{1,a} = VOIs_names(a);               % VOI name
-        voi_results{2,a} = mean(tmp_dat(tmp_dat~=0));   % Mean
-        voi_results{3,a} = std(tmp_dat(tmp_dat~=0));    % SD
-        voi_results{4,a} = min(tmp_dat(:));             % Min
-        voi_results{5,a} = max(tmp_dat(:));             % Max
-        voi_results{6,a} = sum(tmp_dat(:));             % Sum
-        
-        tmp_dat = tmp_dat ./ voi_results{2,1};          % Corrects for whole brain mean
-        voi_results{7,a} = mean(tmp_dat(tmp_dat~=0));   % Mean (corrected)
-        voi_results{8,a} = std(tmp_dat(tmp_dat~=0));    % SD (corrected)
-        
-        M(f,a) = voi_results{2,a};                      % Store mean value in separate variable
-        M_corr(f,a) = voi_results{7,a};                 % Store mean corrected value in separate variable
-        
-        clear tmp_dat m_dat;
-        % Remove temporary file
-        delete('test.nii');
-        
+        if isequal(spm('Ver'),'SPM12')
+            spm_imcalc(VOIs,Vo,'i1 == r',{},r);
+        else
+            Vi = spm_vol(VOIs);
+            vol = Vi;
+            vol.fname = temp;
+            spm_imcalc(Vi,vol,'i1 == r',{},r);
+        end
     end
-       
-    %% Store results
-    T(f).name = spm_file(files(f,:),'filename');
-    T(f).results = voi_results;
     
+    for f = 1:nfiles
+        multiWaitbar('Image', 'Value', f/nfiles);    % Waitbar
+        M(v,1,f) = spm_summarise(files(f,:),Vo,@mean);
+        M(v,2,f) = spm_summarise(files(f,:),Vo,@std);
+        M(v,3,f) = spm_summarise(files(f,:),Vo,@min);
+        M(v,4,f) = spm_summarise(files(f,:),Vo,@max);
+    end
 end
 
-%% Final values
-for i = 1:n_vois
-    F(1,i) = mean(M(:,i));
-    F(2,i) = std(M(:,i));
-    F(3,i) = mean(M_corr(:,i));
-    F(4,i) = std(M_corr(:,i));
+if exist(temp,'file')
+    delete(temp);
 end
-
-M_table = array2table(M);
-M_table.Properties.RowNames = matlab.lang.makeValidName(cellstr(spm_file(files,'basename')));
-M_table.Properties.VariableNames = matlab.lang.makeValidName(VOIs_names);
-
-Mcorr_table = array2table(M_corr);
-Mcorr_table.Properties.RowNames = M_table.Properties.RowNames;
-Mcorr_table.Properties.VariableNames = M_table.Properties.VariableNames;
-
-F_table = array2table(F);
-F_table.Properties.RowNames = {'Mean' 'Std', 'Mean_corr', 'Std_corr'};
-F_table.Properties.VariableNames = M_table.Properties.VariableNames;
 
 
 %% Save results
-cd(results_path);
+save([results_name,'.mat'], 'M');
 
-% .mat file
-save([results_name,'.mat'], 'T', 'M_table', 'Mcorr_table', 'F_table');
-% Excel file
-if exist([results_name,'.xls'],'file') == 2
-    delete([results_name,'.xls']);
+% Save txt file
+fid = fopen([results_name '.txt'], 'w');
+
+fprintf(fid, 'File Name \t');
+for h = 1:nvois
+    fprintf(fid, '%s\t', VOIs_names{h});    % VOI name
+end
+fprintf(fid, '\r\n');                       % End row
+
+for f = 1:nfiles
+    fprintf(fid, '%s\t', spm_file(files(f,:),'basename'));       % File name
+    
+    for h = 1:nvois
+        fprintf(fid, '%12.8f\t', M(h,1,f)); % VOI mean
+    end
+    fprintf(fid, '\r\n');                   % End row
+
 end
 
-writetable(M_table, [results_name,'.xls'], 'WriteRowNames',true,'FileType','spreadsheet','Sheet',1);
-writetable(Mcorr_table, [results_name,'.xls'], 'WriteRowNames',true,'FileType','spreadsheet','Sheet',2);
-writetable(F_table, [results_name,'.xls'], 'WriteRowNames',true,'FileType','spreadsheet','Sheet',3);
+fclose(fid);
 
-%% Close waitbar
 multiWaitbar('CloseAll');
+
 end

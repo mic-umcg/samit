@@ -6,13 +6,9 @@ function samit_fix(files,d)
 
 %   Version: 14.12.02 (02 December 2014)
 %   Author:  David Vállez Garcia
-%   Email:   dvallezgarcia=gmail*com
-%   Real_email = regexprep(Email,{'=','*'},{'@','.'})
+%   Email:   samit@umcg.nl
 
 %   Tested with SPM8 & SPM12
-
-%   Version: 14.12 Solved issue with Left/Right
-
 
 %% Display
 if ~exist('d','var')

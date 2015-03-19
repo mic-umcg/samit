@@ -15,8 +15,7 @@ function table_name = samit_tableSUV(files,output,d)
 
 %   Version: 14.09 (17 September 2014)
 %   Author:  David Vállez Garcia
-%   Email:   dvallezgarcia=gmail*com
-%   Real_email = regexprep(Email,{'=','*'},{'@','.'})
+%   Email:   samit@umcg.nl
 
 %   Tested with SPM8
 

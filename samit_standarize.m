@@ -16,8 +16,7 @@ function samit_standarize(infile,units,gs,d)
 
 %   Version: 15.02 (17 September 2014)
 %   Author:  David Vállez Garcia
-%   Email:   dvallezgarcia=gmail*com
-%   Real_email = regexprep(Email,{'=','*'},{'@','.'})
+%   Email:   samit@umcg.nl
 
 %   Tested with SPM8 and SPM12
 

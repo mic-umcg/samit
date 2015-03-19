@@ -6,8 +6,7 @@ function samit_correction_image(ref_file, work_files)
 
 %   Version: 15.11 (26 November 2014)
 %   Author:  David Vállez Garcia
-%   Email:   dvallezgarcia=gmail*com
-%   Real_email = regexprep(Email,{'=','*'},{'@','.'})
+%   Email:   samit@umcg.nl
 
 %   Tested with SPM8 & SPM12
 

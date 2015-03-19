@@ -9,8 +9,7 @@ function samit_mask(specie,files,d)
 
 %   Version: 14.11 (26 November 2014)
 %   Author:  David Vállez Garcia
-%   Email:   dvallezgarcia=gmail*com
-%   Real_email = regexprep(Email,{'=','*'},{'@','.'})
+%   Email:   samit@umcg.nl
 
 %   Tested with SPM8 & SPM12
 %   Version 14.11: spm_mask is replaced by spm_imcalc_ui

@@ -8,13 +8,12 @@ function samit_template_construction(specie)
 
 %   Version: 14.12.04 (04 December 2014)
 %   Author:  David Vállez Garcia
-%   Email:   dvallezgarcia=gmail*com
-%   Real_email = regexprep(Email,{'=','*'},{'@','.'})
+%   Email:   samit@umcg.nl
 
 %   Tested with SPM8 & SPM12
 %   Version 14.10:
 %       - All flags are moved to samit_defaults
-%       - Not neccesary anymore to scale the rat brain x10
+%       - Not necessary anymore to scale the rat brain x10
 %       - Origin of the input files is located at the center of the image
 %       before normalisation
 %   Version 14.11:

@@ -19,8 +19,7 @@ function samit_createSUV(type,gs,infile,d)
 
 %   Version: 15.02 (04 February 2015)
 %   Author:  David Vállez Garcia
-%   Email:   dvallezgarcia=gmail*com
-%   Real_email = regexprep(Email,{'=','*'},{'@','.'})
+%   Email:   samit@umcg.nl
 
 %   Tested with SPM8 and SPM12
 

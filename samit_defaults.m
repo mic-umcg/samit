@@ -8,10 +8,9 @@ function samit_def = samit_defaults(specie)
 
 %   Version: 14.09 (17 September 2014)
 %   Author:  David Vállez Garcia
-%   Email:   dvallezgarcia=gmail*com
-%   Real_email = regexprep(Email,{'=','*'},{'@','.'})
+%   Email:   samit@umcg.nl
 
-%   Tested with SPM8
+%   Tested with SPM8 & SPM12
 
 %   Recommended Basal Plasma Glucose levels:
 %       - Rat:  5.5 mmol/L
@@ -23,8 +22,9 @@ end
 
 %% Information related with the templates
 % Rat (Schwarz et al. 2006)
-MRI_rat	     = 'Rat_T2w.nii';
-mask_rat     = 'Rat_intracranialMask.nii';
+% doi:10.1016/j.neuroimage.2006.04.214
+MRI_rat	     = 'Schwarz_T2w.nii';
+mask_rat     = 'Schwarz_intracranialMask.nii';
 bregma_rat   = [0, 4.9, 4.3]; % mm from the center to bregma
 
 % Mouse (Ma et al. 2005, 2008)

@@ -9,8 +9,7 @@ function samit_template_accuracy(template,files,suffix,d)
 
 %   Version: 14.12.04 (04 December 2014)
 %   Author:  David V?llez Garcia
-%   Email:   dvallezgarcia=gmail*com
-%   Real_email = regexprep(Email,{'=','*'},{'@','.'})
+%   Email:   samit@umcg.nl
 
 %   Tested with SPM8 & SPM12
 %   Version 14.12.04: Code was adjusted for SPM12 & to small animal scale

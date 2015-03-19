@@ -10,10 +10,9 @@ function samit_origin(pos,specie,files,d)
 %       files  - Working files
 %       d      - Display (default: true)
 
-%   Version: 14.09 (17 September 2014)
+%   Version: 15.03 (12 March 2015)
 %   Author:  David Vállez Garcia
-%   Email:   dvallezgarcia=gmail*com
-%   Real_email = regexprep(Email,{'=','*'},{'@','.'})
+%   Email:   samit@umcg.nl
 
 %   Tested with SPM8 & SPM12
 
@@ -60,57 +59,75 @@ end
 %% Change location of coordinates
 % Obtain defaults values from samit_defaults
 samit_def = samit_defaults(specie);
-bregma = samit_def.bregma;
+bregma = spm_matrix(samit_def.bregma);
 clear samit_def;
 
-for f = 1:size(files)
-    % Working image
-    [file_dir, file_name, ext]  = spm_fileparts(files(f,:));
-    vol = spm_vol([file_dir, filesep, file_name, ext]);
-    dat = spm_read_vols(vol);
+vols = spm_vol(files); 
+
+for V = vols'
+%%    Old code
+%     % Working image
+%     [file_dir, file_name, ext]  = spm_fileparts(files(f,:));
+%     vol = spm_vol([file_dir, filesep, file_name, ext]);
+%     dat = spm_read_vols(vol);
+%     
+%     % Image matrix
+%     mat = vol.mat;
+%        
+%     % Origin: Center Image
+%     xc = (vol.dim(1) + 1) * mat(1,1) / 2;
+%     yc = (vol.dim(2) + 1) * mat(2,2) / 2;
+%     zc = (vol.dim(3) + 1) * mat(3,3) / 2;
+%     
+%     mat(1,4) = -xc;
+%     mat(2,4) = -yc;
+%     mat(3,4) = -zc;
+%     
+%     if isequal(pos,'bregma')
+%         % Origin: Bregma (from center of the template to bregma)
+%                        
+%         % Calculate location
+%         if abs(mat(1,1)) < 1   % Image rat size
+%             xb = xc + bregma(1); 
+%             yb = yc + bregma(2);    
+%             zb = zc + bregma(3);
+%         else                   % Image scaled x10 (~human size)
+%             xb = xc + (bregma(1) * 10); 
+%             yb = yc + (bregma(2) * 10);      
+%             zb = zc + (bregma(3) * 10);
+%         end
+%         
+%         mat(1,4) = -xb;
+%         mat(2,4) = -yb;
+%         mat(3,4) = -zb;
+%     end
+%     
+%     % Write new file
+%     vol.mat = mat;
+%     vol.private.mat = mat;
+%     vol.private.mat0 = mat;
+%     
+%     cd(file_dir);
+%     spm_write_vol(vol,dat);
+
+    % Voxel size    
+    voxdim = diag(V.mat)';
+    voxdim = voxdim(1:3);
     
-    % Image matrix
-    mat = vol.mat;
-       
-    % Origin: Center Image
-    xc = (vol.dim(1) + 1) * mat(1,1) / 2;
-    yc = (vol.dim(2) + 1) * mat(2,2) / 2;
-    zc = (vol.dim(3) + 1) * mat(3,3) / 2;
-    
-    mat(1,4) = -xc;
-    mat(2,4) = -yc;
-    mat(3,4) = -zc;
-    
-    if isequal(pos,'bregma')
-        % Origin: Bregma (from center of the template to bregma)
-                       
-        % Calculate location
-        if abs(mat(1,1)) < 1   % Image rat size
-            xb = xc + bregma(1); 
-            yb = yc + bregma(2);    
-            zb = zc + bregma(3);
-        else                   % Image scaled x10 (~human size)
-            xb = xc + (bregma(1) * 10); 
-            yb = yc + (bregma(2) * 10);      
-            zb = zc + (bregma(3) * 10);
-        end
+    % Matrix with location of the image center
+    mat = spm_matrix([voxdim/2]) \ spm_matrix([-(V.dim .* voxdim /2) 0 0 0 voxdim]);
         
-        mat(1,4) = -xb;
-        mat(2,4) = -yb;
-        mat(3,4) = -zb;
+    % If 'bregma' option is selected
+    if isequal(pos,'bregma')
+        mat = bregma \ mat; 
     end
     
-    % Write new file
-    vol.mat = mat;
-    vol.private.mat = mat;
-    vol.private.mat0 = mat;
-    
-    cd(file_dir);
-    spm_write_vol(vol,dat);
+    % Save new location of origin
+    spm_get_space(V.fname,mat);
     
     % Display info
     if d ~= false
-        display(['Origin located in ', pos , ' for: ', file_name, ext]);
+        display(['Origin located in ', pos , ' for: ', spm_file(V.fname, 'filename')]);
     end
     
 end

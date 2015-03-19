@@ -9,8 +9,7 @@ function samit_multiNormalise(specie, template,files,d)
 
 %   Version: 14.11 (11 November 2014)
 %   Author:  David Vállez Garcia
-%   Email:   dvallezgarcia=gmail*com
-%   Real_email = regexprep(Email,{'=','*'},{'@','.'})
+%   Email:   samit@umcg.nl
 
 %   Tested with SPM8 & SPM12
 

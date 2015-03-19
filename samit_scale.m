@@ -6,10 +6,9 @@ function samit_scale(files,d)
 
 %   Version: 14.09 (17 September 2014)
 %   Author:  David Vállez Garcia
-%   Email:   dvallezgarcia=gmail*com
-%   Real_email = regexprep(Email,{'=','*'},{'@','.'})
+%   Email:   samit@umcg.nl
 
-%   Tested with SPM8
+%   Tested with SPM8 & SPM12
 
 %% Check display flag
 if ~exist('d','var')
