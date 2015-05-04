@@ -1,3 +1,7 @@
+---
+layout: default
+title: Home
+---
 # Example of Voxel-based Analysis in SPM
 
 >The voxel-based analysis is performed in a similar way as it is done in humans. The following steps are recommended:
