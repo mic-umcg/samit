@@ -26,7 +26,7 @@ A brief manual explaining the content of the toolbox can be found [here]({{ site
 
 ## Example of rat voxel-based analysis in SPM
 
-A step-by-step example of how to use SAMIT in combination with SPM for the data analysis can be found [here]( {{ sitebaseurl. }}/example).
+A step-by-step example of how to use SAMIT in combination with SPM for the data analysis can be found [here]( {{ site.baseurl }}/example).
 
 ## The SAMIT project
 
