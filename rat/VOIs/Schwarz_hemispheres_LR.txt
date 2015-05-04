@@ -1,8 +1,0 @@
-# SPM Rat Analysis toolbox
-# Schwarz et al 2006
-# doi:10.1016/j.neuroimage.2006.04.214
-# Image: Schwarz_hemispheres_LR.nii
-
-# Index	Name
-1	Left
-2	Right

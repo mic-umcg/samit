@@ -32,6 +32,7 @@ if ~exist('files','var')
         display('Operation cancelled: No selected images.');
         return
     end
+    files = deblank(files);
 end
     
 %% Scale images

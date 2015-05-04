@@ -1,18 +1,20 @@
-function samit_mask(specie,files,d)
+function samit_mask(atlas,files,d)
 %   Applies whole brain mask to the defined images
-%   FORMAT smait_mask(specie,files)
-%       specie - Animal specie
-%                'rat' (Default)
-%                'mouse'
+%   FORMAT smait_mask(atlas,files)
+%       atlas  - Small animal atlas (see 'samit_defaults')
 %       files  - Working files
 %       d      - Display (default: true)
 
-%   Version: 14.11 (26 November 2014)
+%   Version: 15.04 (29 April 2015)
 %   Author:  David Vállez Garcia
 %   Email:   samit@umcg.nl
 
 %   Tested with SPM8 & SPM12
 %   Version 14.11: spm_mask is replaced by spm_imcalc_ui
+%   Version 15.04: adjusted to new samit_defaults
+
+%% Remove warning message
+warning('off','all');   % Remove warning notifications due to left-right flip of the images
 
 %% Display
 if ~exist('d','var')
@@ -25,22 +27,16 @@ if d ~= false
     display('--------------------------------');
 end
 
-%% Working mask
-if ~exist('specie','var')
-    specie = 'rat'; % By default 'rat' is selected
-end
-
+%% Load defaults values
 % Mask is selected automatically
-samit_def = samit_defaults(specie);
+if exist('atlas','var')
+    samit_def = samit_defaults(atlas);   
+else 
+    samit_def = samit_defaults; 
+end
 mask = samit_def.mask;
 clear samit_def;
-
-% Manual selection of the mask
-% mask = spm_select(1, 'image', 'Select mask image...');
-% if isempty(mask)
-%    display('Operation cancelled: No selected mask.');
-%	return
-% end    
+  
     
 %% Images to apply mask
 if ~exist('files','var')
@@ -49,6 +45,7 @@ if ~exist('files','var')
         display('Operation cancelled: No selected images.');
         return
     end
+    files = deblank(files);
 end
 
 %% Apply mask to the images

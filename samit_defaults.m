@@ -1,12 +1,12 @@
-function samit_def = samit_defaults(specie)
-%   Load default values for SPM analysis of PET/SPECT in rats and mouse
-%   FORMAT samit_def = samit_defaults(specie)
-%       specie    - Animal specie
-%                  'rat' (Default)
-%                  'mouse'
+function samit_def = samit_defaults(atlas)
+%   Load default values for SPM analysis of PET/SPECT in small animals
+%   FORMAT samit_def = samit_defaults(atlas)
+%       atlas     - Small animal atlas
+%                  'Schwarz'    Rat Atlas (Default)
+%                  'Ma'         Mouse Atlas
 %       samit_def - Output variable with all the default parameters
 
-%   Version: 14.09 (17 September 2014)
+%   Version: 15.04 (29 April 2015)
 %   Author:  David Vállez Garcia
 %   Email:   samit@umcg.nl
 
@@ -15,34 +15,53 @@ function samit_def = samit_defaults(specie)
 %   Recommended Basal Plasma Glucose levels:
 %       - Rat:  5.5 mmol/L
 
-%% Check input
-if ~exist('specie','var');	% If specie is not specified, 'rat' will be used
-    specie = 'rat';
+
+%% Atlas
+default_atlas = 'Schwarz'; % This atlas will be used as the defatult
+if ~exist('atlas','var');
+    atlas = default_atlas;
 end
 
-%% Information related with the templates
-% Rat (Schwarz et al. 2006)
-% doi:10.1016/j.neuroimage.2006.04.214
-MRI_rat	     = 'Schwarz_T2w.nii';
-mask_rat     = 'Schwarz_intracranialMask.nii';
-bregma_rat   = [0, 4.9, 4.3]; % mm from the center to bregma
+switch atlas
+	case 'Schwarz'
+		% Rat (Schwarz et al. 2006)
+        % doi:10.1016/j.neuroimage.2006.04.214
+        pathname = 'Schwarz_rat';
+        MRI	     = 'Schwarz_T2w.nii';
+        mask     = 'Schwarz_intracranialMask.nii';
+        bregma   = [0, 4.9, 4.3];
+             		  
+	case 'Ma'
+		% Mouse (Ma et al. 2005, 2008)        
+        pathname = 'Ma_mouse';
+        MRI      = 'Mouse_C57BL6_MRI_masked.nii';
+        mask     = 'Mouse_C57BL6_brainmask.nii';
+        bregma   = [0 0 0];
 
-% Mouse (Ma et al. 2005, 2008)
-MRI_mouse    = 'Mouse_C57BL6_MRI_masked.nii';
-mask_mouse   = 'Mouse_C57BL6_brainmask.nii';
-bregma_mouse = [0 0 0]; % Not defined
+% Example fro new atlas
+%    case 'Atlas_name'
+%    % Add some description for the atlas        
+%       pathname = 'pathname';                    % Name of the path were atlas is located
+%       MRI      = 'SmallAnimal_MRI.nii';         % Name of the reference MRI
+%       mask     = 'SmallAnimal_brainmask.nii';   % Name of the brain mask
+%       bregma   = [0 0 0]; % Distance (mm) to bregma from center of MRI image
+        
+       
+end
+
 
 %% Define variables
-[samit_dir, ~, ~] = fileparts(which('samit'));
-
-%global samit_def
-samit_def.dir                        = samit_dir;
-samit_def.specie					 = specie;
+samit_def.dir                   = fileparts(which('samit'));
+samit_def.atlas                 = atlas;
+samit_def.mri 					= fullfile(samit_def.dir,pathname,'templates',MRI);
+samit_def.mask 					= fullfile(samit_def.dir,pathname,'mask',mask);
+%samit_def.stats.results.mipmat  = cellstr(fullfile(samit_def.dir,'rat','MIP.mat'));
+samit_def.stats.results.mipmat 	= fullfile(samit_def.dir,pathname,'MIP.mat');
+samit_def.bregma                = bregma;
 
 % Normalise
 samit_def.normalise.estimate.smosrc   = 0.8;
 samit_def.normalise.estimate.smoref   = 0;
-%samit_def.normalise.estimate.regtype  = 'rigid'; % Almost rigid affine regularisation
 samit_def.normalise.estimate.regtype  = 'none';
 samit_def.normalise.estimate.cutoff   = 25;
 samit_def.normalise.estimate.nits     = 0;	    % Avoid warp
@@ -54,6 +73,11 @@ samit_def.normalise.write.vox        = [0.2 0.2 0.2];  % Voxel size
 samit_def.normalise.write.interp     = 1;              % Interpolation method
 samit_def.normalise.write.wrap       = [0 0 0];        % Warping
 samit_def.normalise.write.prefix	 = 'w';
+
+% Check if it is correct
+[bb, vx] = spm_get_bbox(samit_def.mri);
+bb(2,:) = bb(2,:) + abs(vx);            % Correction for number of slides
+samit_def.normalise.write.bb         = bb;
 
 % Smooth
 samit_def.smooth.fwhm  = [1.2 1.2 1.2];
@@ -71,25 +95,6 @@ samit_def.coreg.write.which       = 1;
 samit_def.coreg.write.wrap        = [0 0 0];
 samit_def.coreg.write.prefix      = 'r';
 
-
-
-%% Switch
-switch specie
-	case 'rat'
-		samit_def.mri 					= fullfile(samit_dir,'rat','templates',MRI_rat);
-		samit_def.mask 					= fullfile(samit_dir,'rat','mask',mask_rat);
-		samit_def.stats.results.mipmat 	= cellstr(fullfile(samit_dir,'MIP_rat.mat'));
-		samit_def.bregma                = bregma_rat;
-        
-	case 'mouse'
-		samit_def.mri 					= fullfile(samit_dir,'mouse','templates',MRI_mouse);
-		samit_def.mask 					= fullfile(samit_dir,'mouse','mask',mask_mouse);
-        samit_def.stats.results.mipmat 	= cellstr(fullfile(samit_dir,'MIP_mouse.mat'));
-        samit_def.bregma                = bregma_mouse;
-
-end
-
-samit_def.normalise.write.bb  = spm_get_bbox(samit_def.mri);
 
 %% Change dafault values in SPM
 global defaults;

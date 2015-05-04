@@ -1,20 +1,19 @@
-function samit_origin(pos,specie,files,d)
+function samit_origin(pos,atlas,files,d)
 %   Replace the location of origin's coordinates
 %   FORMAT samit_origin(pos,specie,files,d)
 %       pos    - Desired position of the "origins" coordinates.
 %               'center' : Center of the image
 %               'bregma' : Bregma location
-%       specie - Animal specie
-%                'rat' (Default)
-%                'mouse'
+%       atlas  - Small animal atlas (see 'samit_defaults')
 %       files  - Working files
 %       d      - Display (default: true)
 
-%   Version: 15.03 (12 March 2015)
+%   Version: 15.04 (29 April 2015)
 %   Author:  David Vállez Garcia
 %   Email:   samit@umcg.nl
 
 %   Tested with SPM8 & SPM12
+%   Version 15.04: adjusted to new samit_defaults
 
 
 %% Variables & Input
@@ -28,11 +27,6 @@ end
 if ~ismember(pos,{'center', 'bregma'})
     display('Operation cancelled: Wrong input in the position of the origin');
 	return
-end
-
-% If specie is not introduced, then 'rat' will be used as default
-if ~exist('specie','var');	% If specie is not specified, 'rat' will be used
-    specie = 'rat';
 end
 
 % Display
@@ -54,11 +48,17 @@ if ~exist('files','var')
 		display('Operation cancelled: No files were selected');
         return
     end
+    files = deblank(files);
 end
 
 %% Change location of coordinates
 % Obtain defaults values from samit_defaults
-samit_def = samit_defaults(specie);
+if ~exist('atlas','var')
+    samit_def = samit_defaults; % Load default values
+else
+    samit_def = samit_defaults(atlas);
+end
+
 bregma = spm_matrix(samit_def.bregma);
 clear samit_def;
 
@@ -115,7 +115,7 @@ for V = vols'
     voxdim = voxdim(1:3);
     
     % Matrix with location of the image center
-    mat = spm_matrix([voxdim/2]) \ spm_matrix([-(V.dim .* voxdim /2) 0 0 0 voxdim]);
+    mat = spm_matrix(voxdim/2) \ spm_matrix([-(V.dim .* voxdim /2) 0 0 0 voxdim]);
         
     % If 'bregma' option is selected
     if isequal(pos,'bregma')

@@ -1,20 +1,19 @@
-function samit_VOI(specie)
+function samit_VOI(atlas)
 %   Extract the mean values from VOIs
 %   Origin is expected to be in same location in the images, the VOI and
 %   the whole brain mask
-%   FORMAT samit_VOI(specie)
-%       specie  - Animal specie
-%                 'rat' (Default)
-%                 'mouse'
+%   FORMAT samit_VOI(atlas)
+%       atlas  - Small animal atlas (see 'samit_defaults')
 
-%   Version: 12.03.24 (12 March 2015)
+%   Version: 15.04 (29 April 2015)
 %   Author:  David Vallez Garcia
 %   Email:   samit@umcg.nl
 
 %   Tested with SPM8 & SPM12
-%   v14.11.28:    Images are masked using spm_imcalc
-%   v15.02.24:    Calculation is done using spm_summarise
-%   v15.03.12:    Adjustment for SPM8 compatibility
+%   v14.11:    Images are masked using spm_imcalc
+%   v15.02:    Calculation is done using spm_summarise
+%   v15.03:    Adjustment for SPM8 compatibility
+%              Adjusted to new samit_defaults        
 
 
 
@@ -23,17 +22,10 @@ display(' ');
 display('SAMIT: Extraction of VOIs data');
 display('------------------------------');
 
-%% Check input
-if ~exist('specie','var');
-    specie = 'rat';
-end
-if ~ismember(specie,{'rat', 'mouse'})
-    display('Operation cancelled: Wrong input in the animal specie');
-    return
-end
 
 %% Reference VOIs
 VOIs = spm_select(1,'image','Please, select the image containing the VOIs...');
+VOIs = deblank(VOIs);
 
 if ~isempty(VOIs)
     
@@ -68,7 +60,12 @@ end
 
 
 %% Whole brain VOI
-samit_def = samit_defaults(specie);
+if ~exist('atlas','var')
+    samit_def = samit_defaults; % Load default values
+else
+    samit_def = samit_defaults(atlas);
+end
+
 mask = samit_def.mask;
 clear samit_def;
 
@@ -78,6 +75,7 @@ if isempty(files)   % Error check
     display('Operation cancelled: No files were selected');
     return
 end
+files = deblank(files);
 
 %% Name to store the results
 [results_name, results_path] = uiputfile('*.txt', 'New file to store the results...');
@@ -136,6 +134,8 @@ end
 
 
 %% Save results
+cd(results_path);
+
 save([results_name,'.mat'], 'M');
 
 % Save txt file

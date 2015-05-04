@@ -1,18 +1,18 @@
 function samit_template_accuracy(template,files,suffix,d)
 %   Evaluation random misalignments of PET / SPECT templates
-%   FORMAT samit_template_accuracy(specie,template,files,suffix,d)
+%   FORMAT samit_template_accuracy(template,files,suffix,d)
 %       template    - Reference template to evaluate
 %       files       - Images used for the construction of the template
 %       suffix      - Suffix added to the name of the template to store
 %                      results
 %       d           - Display (default: true)
 
-%   Version: 14.12.04 (04 December 2014)
-%   Author:  David V?llez Garcia
+%   Version: 14.12 (04 December 2014)
+%   Author:  David Vállez Garcia
 %   Email:   samit@umcg.nl
 
 %   Tested with SPM8 & SPM12
-%   Version 14.12.04: Code was adjusted for SPM12 & to small animal scale
+%   Version 14.12: Code was adjusted for SPM12 & to small animal scale
 %   (not needed anymore to scale x10 the images to resemble human size)
 
 %% Input
@@ -24,6 +24,7 @@ if ~exist('template','var')
         display('Operation cancelled: No template selected.');
         return
     end
+    template = deblank(template);
 end
 
 template_vol = spm_vol(template);
@@ -35,6 +36,7 @@ if ~exist('files','var')
         display('Operation cancelled: No files selected.');
         return
     end
+    files = deblank(files);
 end
 
 [nFiles, ~] = size(files);

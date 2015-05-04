@@ -1,26 +1,29 @@
-function samit_template_construction(specie)
-%   Construction of tracer-specific PET/SPECT templates for rat / mouse
-%   brain. Origin is expected to be at the center of the image
-%   FORMAT samit_template_construction(specie)
-%       specie  - Animal specie
-%                'rat'  (Default)
-%                'mouse'
+function samit_template_construction(atlas)
+%   Construction of tracer-specific PET/SPECT templates for small animal
+%   brain.
+%   FORMAT samit_template_construction(atlas)
+%       atlas  - Small animal atlas (see 'samit_defaults')
 
-%   Version: 14.12.04 (04 December 2014)
+%   Version: 15.04 (29 April 2015)
 %   Author:  David Vállez Garcia
 %   Email:   samit@umcg.nl
 
 %   Tested with SPM8 & SPM12
-%   Version 14.10:
+%   Version 14.10
 %       - All flags are moved to samit_defaults
 %       - Not necessary anymore to scale the rat brain x10
 %       - Origin of the input files is located at the center of the image
 %       before normalisation
-%   Version 14.11:
+%   Version 14.11
 %       - Tested with mice data
 %       - Bounding box calculated automatically (spm_get_bbox)
-%   Version 14.12:
+%   Version 14.12
 %       - Adjusted the smoothness
+%   Version 15.04
+%       - Original files are not used anymore
+%       - Bounding box adjusted
+%       - Adjusted to new samit_defaults
+
 
 %% Display
 display(' ');
@@ -30,17 +33,12 @@ display('-----------------------------------------------');
 warning('off','all');   % Remove warning notifications due to left-right flip of the image
 
 
-%% Check input
-if ~exist('specie','var');
-    specie = 'rat';
-end
-if ~ismember(specie,{'rat', 'mouse'})
-    display('Operation cancelled: Wrong input in the animal specie');
-    return
-end
-
 %% Load default values from samit_defaults
-samit_def = samit_defaults(specie);
+if ~exist('atlas','var')	% If atlas is not specified, 'rat' will be used
+    samit_def = samit_defaults; % Load default values
+else
+    samit_def = samit_defaults(atlas);
+end
 
 %% Name of the template
 [template, template_path] = uiputfile('*.nii', 'Name of the new template...');
@@ -59,13 +57,20 @@ if isempty(files)
     display('Operation cancelled: No files selected.');
     return
 end
+files = spm_file(files, 'number', ''); % Remove "number" from the name
+files = deblank(files);
 nfiles = size(files,1); % Number of images selected
 
 %% Bounding box
-samit_def.normalise.write.bb = spm_get_bbox(files(1,:));
+[bb, vx] = spm_get_bbox(files(1,:));
+bb(2,:) = bb(2,:) + abs(vx);
+samit_def.normalise.write.bb = bb;
 
 %% Adjust of reference smoothing
 samit_def.normalise.estimate.smoref = 0.8;
+
+%% Adjust registration type
+samit_def.normalise.estimate.regtype  = 'rigid';
 
 %% Waitbar
 w1 = ['Construction of the template: ',template,'.nii'];
@@ -77,9 +82,12 @@ multiWaitbar('CloseAll');
 %% Step 1: Normalise to the first
 multiWaitbar(w1, 'Value', 1/6); % Waitbar
 
-samit_origin('center',specie,files,false);      % Origin is located in the center
+% Creates a copy of the first image
+copyfile(files(1,:), spm_file(files(1,:), 'prefix', samit_def.normalise.write.prefix));
 
-VG = spm_vol(files(1,:));                       % Reference image
+files_normalise = spm_file(files,'prefix',samit_def.normalise.write.prefix); % List of new files
+
+VG = spm_vol(files_normalise(1,:));             % Reference image
 
 for i = 2:nfiles
     
@@ -89,8 +97,6 @@ for i = 2:nfiles
     prm = spm_normalise(VG,VF,'','','',samit_def.normalise.estimate);
     spm_write_sn(VF,prm,samit_def.normalise.write);
 end
-% List of new created files
-files_normalise = char(files(1,:), spm_file(files(2:end,:),'prefix',samit_def.normalise.write.prefix));
 
 %% Step 2: Mean image
 multiWaitbar(w1, 'Value', 2/6);         % Waitbar
@@ -109,16 +115,11 @@ end
 multiWaitbar(w1, 'Value', 3/6);     % Waitbar
 multiWaitbar(w3, 'Value', 2/4);     % Waitbar
 Vf = 'tmp_flip.nii';                % Output: temporary file
-M = diag([-1 1 1 1]);               % Flip matrix
 
-Vflip = spm_vol(Vo);                
-Vflip.fname = Vf;
-Vflip.mat = M * Vflip.mat;
-Vflip.private.mat = Vflip.mat;
-%Vflip.private.mat0 = Vflip.mat;
-
-dat = spm_read_vols(spm_vol(Vo));
-spm_write_vol(Vflip,dat);           % Writes output
+copyfile(Vo,Vf);                    % Copy of the file
+M = spm_get_space(Vf);              % Matrix of the file
+M(1,:) = -M(1,:);                   % Flip image
+spm_get_space(Vf,M);                % Apply transformation
 
 %% Step 4: Normalise flipped image to the original average
 multiWaitbar(w1, 'Value', 4/6); % Waitbar
@@ -141,18 +142,14 @@ end
 
 %% Step 6: Co-registration of symmetrical image to the MRI template
 multiWaitbar(w4);               % Waitbar
-
-% Origin is located at bregma
-samit_origin('bregma',specie,fullfile(template_path,'tmp_symmetrical.nii'),false);
-samit_origin('bregma',specie,files_normalise,false);
-    
+   
 % Co-registration to MRI template 
 x = spm_coreg(spm_vol(samit_def.mri),spm_vol('tmp_symmetrical.nii'),samit_def.coreg);
 X = spm_matrix(x);
 T = spm_get_space('tmp_symmetrical.nii');
 T = X \ T;
 spm_get_space('tmp_symmetrical.nii', T);
-spm_reslice({samit_def.mri,'tmp_symmetrical.nii'},samit_def.coreg.write);
+spm_reslice(char(samit_def.mri, 'tmp_symmetrical.nii'),samit_def.coreg.write);
 
 % Same co-registration matrix is applied to the images used for the construction of the
 % template
@@ -161,9 +158,7 @@ for i = 1:size(files_normalise,1)
     T0 = spm_get_space(files_normalise(i,:));
     T = X \ T0;
     spm_get_space(files_normalise(i,:), T);
-    spm_reslice({samit_def.mri,files_normalise(i,:)},samit_def.coreg.write);
-    
-    spm_get_space(files_normalise(i,:), T0); % Revert changes   
+    spm_reslice(char(samit_def.mri, files_normalise(i,:)),samit_def.coreg.write);    
     
 end
 multiWaitbar(w1,'Value',1);               % Waitbar
@@ -174,17 +169,6 @@ multiWaitbar(w4,'Value',1);
 movefile('tmp_symmetrical.nii', [template,'_Original_Size.nii']);
 movefile('rtmp_symmetrical.nii', [template,'_MRI_Size.nii']);
 
-for i = 1:size(files_normalise,1)   
-    if ~isequal(spm_file(files_normalise(i,:),'fpath'),pwd);
-        movefile(spm_file(files_normalise(i,:),'prefix',samit_def.coreg.write.prefix,'number',''));
-    end
-    if i == 1
-        samit_origin('center',specie,files_normalise(i,:),false);
-    else
-        delete(spm_file(files_normalise(i,:),'number',''));
-    end
-end
-
 % Store co-registration matrix
 save([template,'_coreg.mat'],'X');
 
@@ -192,7 +176,12 @@ save([template,'_coreg.mat'],'X');
 spm_check_registration(char(samit_def.mri, [template,'_MRI_Size.nii']));
 
 %% Clear temporary files
-delete('tmp_*', 'wtmp_*');
+for d = 1:size(files_normalise,1)
+    delete(files_normalise(d,:));
+end
+delete('tmp_average.nii');
+delete('tmp_flip.nii');
+delete('wtmp_flip.nii');
 
 %% Close multiWaitbar
 multiWaitbar('CloseAll');
