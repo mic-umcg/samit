@@ -56,9 +56,10 @@ The steps performed by the program are:
 5. The final version of the template and its registration with the MRI is displayed
 
 Several files will be created when the construction of the template is completed:
--	*NameTemplate*_coreg.mat The co-registration matrix obtained in the step 3
--	*NameTemplate*_MRI_Size.nii. The new template with the same dimensions and voxel size as the reference MRI
--	*NameTemplate*_Original_Size.nii. The same template as before but preserving the original dimensions of the image. The co-registration matrix is stored in the file. This image can be used for the construction of other versions of the template with different dimension size.
+
+- *NameTemplate*_coreg.mat The co-registration matrix obtained in the step 3
+- *NameTemplate*_MRI_Size.nii. The new template with the same dimensions and voxel size as the reference MRI
+- *NameTemplate*_Original_Size.nii. The same template as before but preserving the original dimensions of the image. The co-registration matrix is stored in the file. This image can be used for the construction of other versions of the template with different dimension size.
 
 The evaluation of the registration accuracy of the images to the template can be performed by selecting `Evaluation of the template` in SAMIT. The previously constructed template must be selected (*_MRI_Size.nii*), followed by the new version of the images used for the construction of the template.
 
