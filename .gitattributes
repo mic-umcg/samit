@@ -1,0 +1,7 @@
+## Remove files from releases
+# git files
+.gitignore export-ignore
+_site/ export-ignore
+Gemfile export-ignore
+Gemfile.lock export-ignore
+README.md export-ignore
