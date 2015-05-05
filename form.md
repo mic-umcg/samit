@@ -20,13 +20,12 @@ It is helpful for us to know about the potential users of the toolbox. Therefore
   <input type="hidden" name="_next" value="{{ site.baseurl }}/download" />
   <input type="text" name="_gotcha" style="display:none" />
 
-  
   First name:  <input type="text" name="firstname"> <br>
   Last name:   <input type="text" name="lastname"> <br>
   Institution: <input type="text" name="institute"> <br>
   Country:     <input type="text" name="country"> <br>
   e-mail:      <input type="email" name="_replyto"> <br>
-  <br>
+  
   Do you want to be including in a mail-list for updates?<br>
   <input type="radio" name="mail-list" value="Yes">Yes<br>
   <input type="radio" name="mail-list" value="No" checked>No<br>
@@ -34,7 +33,7 @@ It is helpful for us to know about the potential users of the toolbox. Therefore
   Enter any additional comments below...<br>
   <textarea name="body" rows="4" cols="50">
   </textarea>
-  <br>
+  
   <input type="reset" value="Clear form">
   <input type="submit" value="Send form">
 
