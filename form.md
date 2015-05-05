@@ -32,7 +32,8 @@ It is helpful for us to know about the potential users of the toolbox. Therefore
   <input type="radio" name="mail-list" value="No" checked>No<br>
   
   Enter any additional comments below...<br>
-  <textarea name="body"> </textarea>
+  <textarea name="body" rows="4" cols="50">
+  </textarea>
   <br>
   <input type="reset" value="Clear form">
   <input type="submit" value="Send form">
