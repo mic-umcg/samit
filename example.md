@@ -87,7 +87,7 @@ In this section we will go through all the steps needed to perform the data anal
      5. Select: *t-contrast*
      6. Contrast: *-1 1*
      7. Click on `OK`
-     <img src="http://s3-eu-west-1.amazonaws.com/learningspacebucket/umcgmic/images/images/000/000/260/original/spm-contrast_manager.png?1430581602" alt="Define Contrast" style="float:right;border:1em">
+     <img src="http://s3-eu-west-1.amazonaws.com/learningspacebucket/umcgmic/images/images/000/000/260/original/spm-contrast_manager.png?1430581602" alt="Define Contrast" style="float:right;border:1em;width:50%">
      8.	Select the contrast and press `Done`
      9. Apply masking: `none`
      10. Title for comparison: leave the current title and press enter
