@@ -1,7 +1,9 @@
 ---
 layout: page
-title: Download registration form
+title: SAMIT download
 ---
+
+# Download registration form
 
 It is helpful for us to know about the potential users of the toolbox. Therefore, we ask you to complete a registration form before downloading SAMIT.
 
@@ -11,6 +13,7 @@ It is helpful for us to know about the potential users of the toolbox. Therefore
 * Any additional comments are will be emailed directly to the developers of the toolbox.
 * Submitting the form will take you to the page with the latest version of the SAMIT software.
 
+<div>
 <form action="http://formspree.io/samit@umcg.nl" method="POST">
   <input type="hidden" name="_subject" value="SAMIT: New form" />
   <input type="hidden" name="_cc" value="d.vallez-garcia@umcg.nl" />
@@ -35,3 +38,4 @@ It is helpful for us to know about the potential users of the toolbox. Therefore
   <input type="submit" value="Send form">
 
 </form>
+</div>
