@@ -65,3 +65,17 @@ The evaluation of the registration accuracy of the images to the template can be
 
 ## VOI Analysis
 The purpose of this function is to facilitate the extraction of the mean values from the images for further volume of interest (VOI) analysis. The program will ask you for the image containing the VOIs, followed by the image(s) from which to calculate the values. The results will be saved in a tabulated text file (\*.txt) and in a Matlab file (\*.mat).
+
+# References
+## Atlases
+- Ma et al., 2005. A three-dimensional digital atlas database of the adult C57BL/6J mouse brain by magnetic resonance microscopy. Neuroscience, 135(4) (doi: [10.1016/j.neuroscience.2005.07.014](http://dx.doi.org/10.1016/j.neuroscience.2005.07.014))
+- Ma, Y. et al., 2008. In Vivo 3D Digital Atlas Database of the Adult C57BL/6J Mouse Brain by Magnetic Resonance Microscopy. Frontiers in neuroanatomy, 2(April) (doi: [10.3389/neuro.05.001.2008](http://dx.doi.org/10.3389/neuro.05.001.2008))
+- Schwarz et al., 2006 A stereotaxic MRI template set for the rat brain with tissue class distribution maps and co-registered anatomical atlas: application to pharmacological MRI. NeuroImage 32(2) (doi: [10.1016/j.neuroimage.2006.04.214](http://dx.doi.org/10.1016/j.neuroimage.2006.04.214))
+
+## SAMIT and tracer-specific templates
+- Vállez Garcia et al., 2015. A Standardized Method for the Construction of Tracer Specific PET and SPECT Rat Brain Templates: Validation and Implementation of a Toolbox. PLoS One, 10(3) (doi: [10.1371/journal.pone.0122363](http://dx.doi.org/10.1371/journal.pone.0122363))
+- Casteels et al., 2013. Construction and evaluation of quantitative small-animal PET probabilistic atlases for [18F]FDG and [18F]FECT functional mapping of the mouse brain. PLoS One, 8(6) (doi: [10.1371/journal.pone.0065286](http://dx.doi.org/10.1371/journal.pone.0065286))
+- Casteels et al., 2006. Construction and evaluation of multitracer small-animal PET probabilistic atlases for voxel-based functional mapping of the rat brain. J Nucl Med, 47(11) ([link](http://jnm.snmjournals.org/content/47/11/1858.long))
+
+## Publications that used SAMIT
+- Vállez Garcia et al., 2015. Evaluation of [11C]CB184 for imaging and quantification of TSPO overexpression in a rat model of herpes encephalitis. Eur J Nucl Med Mol Imaging. 2015 (doi: [10.1007/s00259-015-3021-x](http://dx.doi.org/10.1007/s00259-015-3021-x))
