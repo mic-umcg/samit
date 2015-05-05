@@ -2,7 +2,7 @@
 layout: page
 title: SAMIT Manual
 ---
-
+# Manual
 The aim of this toolbox is to facilitate the construction of new tracer specific templates and the subsequent voxel-based and/or volume-of-interest based analysis of small animal PET and SPECT brain images. After its installation, the SAMIT toolbox will be available from the `toolbox` pull-down in the main SPM window.
 <img src="http://s3-eu-west-1.amazonaws.com/learningspacebucket/umcgmic/images/images/000/000/258/original/samit.png?1430497543" alt="SAMIT interface" style="align:right;float:right;width:30%;margin:1em">
 
