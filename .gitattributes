@@ -6,3 +6,7 @@ _site/ export-ignore
 Gemfile export-ignore
 Gemfile.lock export-ignore
 README.md export-ignore
+
+# SAMIT documentation
+*.doc
+*.docx
