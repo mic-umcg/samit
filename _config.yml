@@ -12,7 +12,7 @@ relative_permalinks: true
 title:               SAMIT
 tagline:             'Small Animal Molecular Imaging Toolbox'
 description:         'The aim of this toolbox is to facilitate the construction of new tracer specific templates and the subsequent voxel-based analysis of small animal PET and SPECT brain images.'
-url:                 http://dvallezgarcia.github.io
+url:                 http://http://mic-umcg.github.io
 baseurl:             "/samit"
 paginate:            5
 
@@ -22,7 +22,7 @@ author:
   email:             samit@umcg.nl
 
 # Custom vars
-version:             v1.0.1
+version:             v1.2
 zenodo:              https://zenodo.org/record/14785
 
 # Exclude these files from _site
