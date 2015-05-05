@@ -1,12 +1,4 @@
-## Remove files from releases
-# git files
-.gitignore export-ignore
-_site/ export-ignore
-Gemfile export-ignore
-Gemfile.lock export-ignore
-README.md export-ignore
-
-## Other files to exlude
+## Files to exlude
 # Windows
 Thumbs.db
 ehthumbs.db
