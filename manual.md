@@ -17,9 +17,7 @@ The first step is to define the animal species by selecting the desired atlas. T
     1. Registration type (for further details see ‘spm_affreg’ function in SPM)
     2. Normalize multiple images
 
-In addition to any previous registration done in VINCI, or any other software package, images can be spatially normalized in SPM. While this is not always necessary, it can be useful when a previous automatic registration was not accurate enough or to improve manual registration procedures. Remember that the best results will be obtained when the images and the target template have similar dimensions.
-
->Take in consideration that initial alignment between the images must be within about 4 cm and about 15 degrees in order for SPM to find the optimal solution.
+>Take in consideration that initial alignment between the images must be within about 4 cm and about 15 degrees in order for SPM to find the optimal solution, and that the best results will be obtained when the images and the target template have similar dimensions.
 
 ### Normalize uptake
 This section allows the normalization of the uptake in multiple images at once. This procedure has two steps.
