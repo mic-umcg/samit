@@ -15,7 +15,9 @@ It is helpful for us to know about the potential users of the toolbox. Therefore
 
 <form action="http://formspree.io/d.vallez-garcia@umcg.nl" method="POST">
   <input type="hidden" name="_subject" value="SAMIT: New form" />
-  <input type="hidden" name="_cc" value="samit@umcg.nl" />
+<!-- Not working yet with SAMIT email address
+  <input type="hidden" name="_cc" value="samit@umcg.nl" /> 
+-->
   <input type="hidden" name="_next" value="{{ site.baseurl }}/download" />
   <input type="text" name="_gotcha" style="display:none" />
   <p>
