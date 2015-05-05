@@ -1,5 +1,6 @@
 ## Remove files from releases
 # git files
+.gitattributes export-ignore
 .gitignore export-ignore
 _site/ export-ignore
 Gemfile export-ignore
