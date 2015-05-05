@@ -90,7 +90,7 @@ In this section we will go through all the steps needed to perform the data anal
      8.	Select the contrast and press `Done`
      9. Apply masking: `none`
      10. Title for comparison: leave the current title and press enter
-     11. Choose the p value adjustment (FEW or uncorrected). In this example select `none`
+     11. Choose the p value adjustment (FWE or uncorrected). In this example select `none`
      12. Choose the p value. In this example type: *0.001*
      13. Extent threshold (voxels). In this example type: *200*
 
