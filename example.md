@@ -82,7 +82,7 @@ In this section we will go through all the steps needed to perform the data anal
 
      1. Click on `Results` button in the main SPM window
      2. Select the *SPM.mat* file located in the directory selected previously during the especification of the model
-     3. Click on `Define a new contrast` <img src="http://s3-eu-west-1.amazonaws.com/learningspacebucket/umcgmic/images/images/000/000/260/original/spm-contrast_manager.png?1430581602" alt="Define Contrast" style="float:right;border:1em;width:50%">
+     3. Click on `Define a new contrast` <img src="http://s3-eu-west-1.amazonaws.com/learningspacebucket/umcgmic/images/images/000/000/260/original/spm-contrast_manager.png?1430581602" alt="Define Contrast" style="float:right;border:1em;width:50%;margin:2em">
      4. In the name type *Healthy &lt; HSE*
      5. Select: *t-contrast*
      6. Contrast: *-1 1*
