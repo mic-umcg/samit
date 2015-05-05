@@ -24,12 +24,12 @@
 </g>
 <g>
 	<g enable-background="new    ">
-		<text transform="matrix(1 0 0 1 -325.6863 303.0618)" fill="#010101" font-family="'Verdana'" font-size="11">DOI</text>
+		<text transform="matrix(1 0 0 1 -325.6863 303.0618)" fill="#010101" font-family="'Verdana'" font-size="10">DOI</text>
 	</g>
-	<text transform="matrix(1 0 0 1 -325.6863 302.28)" fill="#FFFFFF" font-family="'Verdana'" font-size="11">DOI</text>
+	<text transform="matrix(1 0 0 1 -325.6863 302.28)" fill="#FFFFFF" font-family="'Verdana'" font-size="10">DOI</text>
 	<g enable-background="new    ">
-		<text transform="matrix(1 0 0 1 -294.3193 303.0617)" fill="#010101" font-family="'Verdana'" font-size="11">10.5281/zenodo.14785</text>
+		<text transform="matrix(1 0 0 1 -299.3193 303.0617)" fill="#010101" font-family="'Verdana'" font-size="10">10.1371/journal.pone.0122363</text>
 	</g>
-	<text transform="matrix(1 0 0 1 -294.3193 302.28)" fill="#FFFFFF" font-family="'Verdana'" font-size="11">10.5281/zenodo.14785</text>
+	<text transform="matrix(1 0 0 1 -299.3193 302.28)" fill="#FFFFFF" font-family="'Verdana'" font-size="10">10.1371/journal.pone.0122363</text>
 </g>
 </svg>
