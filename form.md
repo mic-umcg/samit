@@ -34,10 +34,10 @@ It is helpful for us to know about the potential users of the toolbox. Therefore
   
   <p>
   Enter any additional comments below...<br>
-  <textarea name="body" rows="6" cols="100">
+  <textarea name="body" rows="6" cols="150">
   </textarea>
   </p>
-  <br>
+  
   <input type="reset" value="Clear form">
   <input type="submit" value="Send form">
 
