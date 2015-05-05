@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: page
 title: Example of Voxel-based Analysis in SPM
 ---
 
