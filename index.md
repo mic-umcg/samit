@@ -17,7 +17,7 @@ It is helpful for us to know about the potential users of the toolbox. Therefore
 
 # Installation
 
-The installation of SAMIT is easy, just extract the content of the previously downloaded file into the `toolbox` folder located inside SPM. The toolbox will be available from the "Toolbox" menu in the SPM interface.
+The installation of SAMIT is easy, just extract the content of the previously downloaded file and rename the folder as `samit` (e.g. from 'samit-1.2' to only 'samit'). Move the folder inside the `toolbox` folder that is located inside SPM. The toolbox will be available from the "Toolbox" menu in the SPM interface.
 
 # SAMIT manual
 
