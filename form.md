@@ -34,7 +34,7 @@ It is helpful for us to know about the potential users of the toolbox. Therefore
   
   <p>
   Enter any additional comments below...<br>
-  <textarea name="body" rows="10" cols="150">
+  <textarea name="body" rows="10" cols="100">
   </textarea>
   </p>
   
