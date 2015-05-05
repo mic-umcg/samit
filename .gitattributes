@@ -8,5 +8,5 @@ Gemfile.lock export-ignore
 README.md export-ignore
 
 # SAMIT documentation
-*.doc
-*.docx
+*.doc export-ignore
+*.docx export-ignore
