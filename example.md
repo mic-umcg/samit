@@ -1,7 +1,8 @@
 ---
 layout: page
-title: Example of Voxel-based Analysis in SPM
+title: SAMIT Example
 ---
+# Example of Voxel-based Analysis in SPM
 
 >The voxel-based analysis is performed in a similar way as it is done in humans. The following steps are recommended:
 
