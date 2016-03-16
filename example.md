@@ -45,7 +45,7 @@ In this section we will go through all the steps needed to perform the data anal
    6. Select the normalization procedure. For this example we will use the *SUV (default)* option
    7. Click in `Create normalized images`. The new images will be located in the same folder than the previous ones, but including the suffix **-SUV**
 
-9.	Apply a mask to the whole brain. This step will avoid the influence of uptake outside the brain during the smoothing procedure, and it will avoid errors if global normalization is used during the statistical model
+9. Apply a mask to the whole brain. This step will avoid the influence of uptake outside the brain during the smoothing procedure, and it will avoid errors if global normalization is used during the statistical model
    1. Click in the `Brain Mask` button
    2. Select the images to which apply the mask (i.e. those with the suffix *–SUV*)
    3. The new images will be located in the same folder than the previous ones with the prefix **m**
@@ -61,7 +61,6 @@ In this section we will go through all the steps needed to perform the data anal
 11.	Statistical model. In this section we are going to define the statistical model, estimate the values and display the results
 
    1. Basic model. First we have to define the model. In the present example it is a simple two-sample t-test design (for further details, please refer to the SPM manual)
-
      1. Click on `Basic Models` button in the main SPM window
      2. Directory: choose the directory were data will be written (e.g. *workspace*)
      3. Select the *Design* as *Two-sample t-test*
@@ -70,7 +69,6 @@ In this section we will go through all the steps needed to perform the data anal
      6. Select *Explicit Mask*, using the whole brain mask located in SAMIT folder (i.e. *Schwarz_intracranialMask.nii*)
 
    2. Estimate the model
-
      1. In the menu of the Batch Editor select `SPM > Stats > Model estimation`
      2. Select the new module `Model estimation` from the left section of the Batch Editor
      3. Click on `Dependency` button, located in the lower right section
@@ -79,7 +77,6 @@ In this section we will go through all the steps needed to perform the data anal
      6. Run the batch: Click on the icon of a green arrow or select `File > Run Batch`
 
    3. Show the results
-
      1. Click on `Results` button in the main SPM window
      2. Select the *SPM.mat* file located in the directory selected previously during the especification of the model
      3. Click on `Define a new contrast` <img src="http://s3-eu-west-1.amazonaws.com/learningspacebucket/umcgmic/images/images/000/000/260/original/spm-contrast_manager.png?1430581602" alt="Define Contrast" style="float:right;border:1em;width:50%;margin:1em">
