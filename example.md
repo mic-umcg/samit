@@ -43,7 +43,7 @@ In this section we will go through all the steps needed to perform the data anal
    2. Select the images to which apply the mask (i.e. those with the suffix *–SUV*)
    3. The new images will be located in the same folder than the previous ones with the prefix **m**
 10. Apply smoothing to the image
-   1.	Click in `Smooth` button from the SPM interface
+   1. Click in `Smooth` button from the SPM interface
    2. Select the images to smooth (i.e. those with the prefix *m*)
    3. Select the desired FWHM. For this example we can leave the default value (recommend values are between 0.8 and 0.12 mm)
    4. Select *Implicit masking* to *Yes*. This will avoid the smoothing to go outside the masked region
