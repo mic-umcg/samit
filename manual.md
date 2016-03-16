@@ -74,6 +74,3 @@ The purpose of this function is to facilitate the extraction of the mean values 
 - Vállez Garcia et al., 2015. A Standardized Method for the Construction of Tracer Specific PET and SPECT Rat Brain Templates: Validation and Implementation of a Toolbox. PLoS One, 10(3) (doi: [10.1371/journal.pone.0122363](http://dx.doi.org/10.1371/journal.pone.0122363))
 - Casteels et al., 2013. Construction and evaluation of quantitative small-animal PET probabilistic atlases for [18F]FDG and [18F]FECT functional mapping of the mouse brain. PLoS One, 8(6) (doi: [10.1371/journal.pone.0065286](http://dx.doi.org/10.1371/journal.pone.0065286))
 - Casteels et al., 2006. Construction and evaluation of multitracer small-animal PET probabilistic atlases for voxel-based functional mapping of the rat brain. J Nucl Med, 47(11) ([link](http://jnm.snmjournals.org/content/47/11/1858.long))
-
-## Publications that used SAMIT
-- Vállez Garcia et al., 2015. Evaluation of [11C]CB184 for imaging and quantification of TSPO overexpression in a rat model of herpes encephalitis. Eur J Nucl Med Mol Imaging. 2015 (doi: [10.1007/s00259-015-3021-x](http://dx.doi.org/10.1007/s00259-015-3021-x))
