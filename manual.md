@@ -65,6 +65,7 @@ The evaluation of the registration accuracy of the images to the template can be
 The purpose of this function is to facilitate the extraction of the mean values from the images for further volume of interest (VOI) analysis. The program will ask you for the image containing the VOIs, followed by the image(s) from which to calculate the values. The results will be saved in a tabulated text file (\*.txt) and in a Matlab file (\*.mat).
 
 # References
+
 ## Atlases
 - Ma et al., 2005. A three-dimensional digital atlas database of the adult C57BL/6J mouse brain by magnetic resonance microscopy. Neuroscience, 135(4) (doi: [10.1016/j.neuroscience.2005.07.014](http://dx.doi.org/10.1016/j.neuroscience.2005.07.014))
 - Ma, Y. et al., 2008. In Vivo 3D Digital Atlas Database of the Adult C57BL/6J Mouse Brain by Magnetic Resonance Microscopy. Frontiers in neuroanatomy, 2(April) (doi: [10.3389/neuro.05.001.2008](http://dx.doi.org/10.3389/neuro.05.001.2008))
