@@ -35,3 +35,11 @@ It is assumed that users are already familiar with [SPM](http://www.fil.ion.ucl.
 SAMIT software is developed on and hosted in GitHub. If you are interested to collaborate in the project, you are more than welcome. Head to the [SAMIT repository] ({{ site.github.repository_url }}) for more details, or contact us at <samit@umcg.nl>
 
 Thanks!
+
+# Publications
+
+1. Vállez García D, de Vries EFJ, Toyohara J, Ishiwata K, Hatano K, Dierckx RAJO, et al. Evaluation of [(11)C]CB184 for imaging and quantification of TSPO overexpression in a rat model of herpes encephalitis. Eur J Nucl Med Mol Imaging. 2015 Jun;42(7):1106–18. [doi](http://dx.doi.org/10.1007/s00259-015-3021-x)
+
+2. Parente A, Kopschina Feltes P, Vállez García D, Sijbesma JWA, Moriguchi Jeckel CM, Dierckx RAJO, et al. Pharmacokinetic analysis of 11C-PBR28 in the rat model of herpes encephalitis (HSE): comparison with (R)-11C-PK11195. J Nucl Med. 2016 [doi](http://dx.doi.org/10.2967/jnumed.115.165019)
+
+3. Vállez García D, Otte A, Dierckx RAJO, Doorduin J. Three months follow-up of rat mild traumatic brain injury: a combined [18F]FDG and [11C]PK11195 PET study. J Neurotrauma. 2016 [doi](http://dx.doi.org/10.1089/neu.2015.4230)
