@@ -60,16 +60,15 @@ In this section we will go through all the steps needed to perform the data anal
 - The new images will be located in the same folder than the previous ones with the prefix *s*. These are the final images to be used in the voxel-based analysis
 
 11. Statistical model. In this section we are going to define the statistical model, estimate the values and display the results:
-
-   1. Basic model. First we have to define the model. In the present example it is a simple two-sample t-test design (for further details, please refer to the SPM manual)
+  1. Basic model. First we have to define the model. In the present example it is a simple two-sample t-test design (for further details, please refer to the SPM manual)
    - Click on `Basic Models` button in the main SPM window
    - Directory: choose the directory were data will be written (e.g. *workspace*)
    - Select the *Design* as *Two-sample t-test*
    - Select the Healthy group as *Group 1 scans*
    - Select the HSE group as *Group 2 scans*
    - Select *Explicit Mask*, using the whole brain mask located in SAMIT folder (i.e. *Schwarz_intracranialMask.nii*)
-   
-   2. Estimate the model
+
+  2. Estimate the model
    - In the menu of the Batch Editor select `SPM > Stats > Model estimation`
    - Select the new module `Model estimation` from the left section of the Batch Editor
    - Click on `Dependency` button, located in the lower right section
@@ -77,7 +76,7 @@ In this section we will go through all the steps needed to perform the data anal
    - Save the batch for future modifications
    - Run the batch: Click on the icon of a green arrow or select `File > Run Batch`
  
-   3. Show the results
+  3. Show the results
     - Click on `Results` button in the main SPM window
     - Select the *SPM.mat* file located in the directory selected previously during the especification of the model
     - Click on `Define a new contrast` <img src="http://s3-eu-west-1.amazonaws.com/learningspacebucket/umcgmic/images/images/000/000/260/original/spm-contrast_manager.png?1430581602" alt="Define Contrast" style="float:right;border:1em;width:50%;margin:1em">
@@ -92,9 +91,9 @@ In this section we will go through all the steps needed to perform the data anal
     - Choose the p value. In this example type: *0.001*
     - Extent threshold (voxels). In this example type: *200*
  
-   4. Results are presented in a maximum intensity projection (MIP) display on a glass rat brain. Since the MRI rat template was spatially aligned with the Paxinos atlas the resulting coordinates are equivalent to those in the atlas
+  4. Results are presented in a maximum intensity projection (MIP) display on a glass rat brain. Since the MRI rat template was spatially aligned with the Paxinos atlas the resulting coordinates are equivalent to those in the atlas
  
-   5. To visualize the results over the MRI  go to `Display > Overlays… > Section` and choose the rat MRI template located in the SAMIT folder
+  5. To visualize the results over the MRI  go to `Display > Overlays… > Section` and choose the rat MRI template located in the SAMIT folder
   
 <img src="http://s3-eu-west-1.amazonaws.com/learningspacebucket/umcgmic/images/images/000/000/261/original/samit-results1.png?1430581720" alt="SPM Results: Table" style="width:50%;float:left">
 
