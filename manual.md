@@ -10,10 +10,11 @@ The aim of this toolbox is to facilitate the construction of new tracer specific
 The first step is to define the animal species by selecting the desired atlas. This step is needed to preload some default values.
 
 ## Image pre-processing
+
 ### Spatial normalization
 1. Reset orientation: This function removes any previous transformation stored in the image and prepares the image for further processing
-2.	Coordinates of the “origin”: The location of the coordinates system in the image is a crucial step while handling the images. The zero or “origin” of this coordinates is usually located in bregma in small animals brains. If bregma is not properly defined in the atlas, the center of the image is an alternative reference
-3.	Spatial registration. This section of the toolbox use the normalization process implemented in SPM8, and allows the selection of multiple images at once.
+2. Coordinates of the “origin”: The location of the coordinates system in the image is a crucial step while handling the images. The zero or “origin” of this coordinates is usually located in bregma in small animals brains. If bregma is not properly defined in the atlas, the center of the image is an alternative reference
+3. Spatial registration. This section of the toolbox use the normalization process implemented in SPM8, and allows the selection of multiple images at once.
     1. Registration type (for further details see ‘spm_affreg’ function in SPM)
     2. Normalize multiple images
 
@@ -28,10 +29,9 @@ This section allows the normalization of the uptake in multiple images at once. 
    3. Third column: Animal body weight (gr)
    4. Fourth column: glucose level in blood (mmol/l)
    <img src="http://s3-eu-west-1.amazonaws.com/learningspacebucket/umcgmic/images/images/000/000/259/original/samit_-_table.png?1430498605" alt="SUV Table" stye="align:center;margin:1em">
-
 2. Construction of new images
    1. Image units: Select the units of the uptake represented in the image. 
-   2.	Normalization type: 
+   2. Normalization type: 
      * SUV (Standardized Uptake Values). Default option. The new image will have the suffix **–SUV**
      * SUVglc (SUV corrected for blood glucose level).  The new image will have the suffix **–SUVglc**
      * SUV whole brain. The SUV will be corrected for the mean uptake value of the whole brain. The new image will have the suffix **–SUVw**
