@@ -32,14 +32,12 @@ In this section we will go through all the steps needed to perform the data anal
 6. Define the location of the ‘origin’. In this data set the current location of the origin is in the center of the image. This information can be checked using the `Display` option in SPM. In SAMIT interface, press in the `Bregma` button and select all the images located in the *HSE* and *Healthy* folders. This process will relocate position of origin in the image close to where bregma is expected.
 
 7. An automatic registration of the images was performed during its pre-processing. The alignment between images can be observed by selecting several images with `Check Reg` in the SPM interface. Nevertheless, we are going to perform again the automatic registration process for a better alignment with the template.
-
    1. Select the `almost rigid body` option in the *‘Spatial Registration’* section
    2. Click in `Normalise multimple images`
    3. Select all the images from the *Healthy* and *HSE* folders
    4. Select the tracer-specific template (*[11C]PK11195_Wistar_Template.nii*) located inside the SAMIT folder. The new images will be located in the same folder than the original ones, but with the prefix **w**
 
 8. Normalize uptake: Information about the injected dose and the weight of the animals is provided in the file *SUV table.txt*
-  
    1. Click on `Create table`
    2. Select all the files created recently with the prefix *w*
    3. Select a name for the new file that will be created
@@ -49,19 +47,17 @@ In this section we will go through all the steps needed to perform the data anal
    7. Click in `Create normalized images`. The new images will be located in the same folder than the previous ones, but including the suffix **-SUV**
 
 9. Apply a mask to the whole brain. This step will avoid the influence of uptake outside the brain during the smoothing procedure, and it will avoid errors if global normalization is used during the statistical model
-  
    1. Click in the `Brain Mask` button
    2. Select the images to which apply the mask (i.e. those with the suffix *–SUV*)
    3. The new images will be located in the same folder than the previous ones with the prefix **m**
 
 10. Apply smoothing to the image
-  
-   1. Click in `Smooth` button from the SPM interface
-   2. Select the images to smooth (i.e. those with the prefix *m*)
-   3. Select the desired FWHM. For this example we can leave the default value (recommend values are between 0.8 and 0.12 mm)
-   4. Select *Implicit masking* to *Yes*. This will avoid the smoothing to go outside the masked region
-   5. Run the batch: Click on the icon of a green arrow or select `File > Run Batch`
-   6. The new images will be located in the same folder than the previous ones with the prefix *s*. These are the final images to be used in the voxel-based analysis
+- Click in `Smooth` button from the SPM interface
+- Select the images to smooth (i.e. those with the prefix *m*)
+- Select the desired FWHM. For this example we can leave the default value (recommend values are between 0.8 and 0.12 mm)
+- Select *Implicit masking* to *Yes*. This will avoid the smoothing to go outside the masked region
+- Run the batch: Click on the icon of a green arrow or select `File > Run Batch`
+- The new images will be located in the same folder than the previous ones with the prefix *s*. These are the final images to be used in the voxel-based analysis
 
 11. Statistical model. In this section we are going to define the statistical model, estimate the values and display the results
   
