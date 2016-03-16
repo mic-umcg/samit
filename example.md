@@ -59,7 +59,8 @@ In this section we will go through all the steps needed to perform the data anal
 - Run the batch: Click on the icon of a green arrow or select `File > Run Batch`
 - The new images will be located in the same folder than the previous ones with the prefix *s*. These are the final images to be used in the voxel-based analysis
 
-11. Statistical model. In this section we are going to define the statistical model, estimate the values and display the results
+11. Statistical model. In this section we are going to define the statistical model, estimate the values and display the results:
+
    1. Basic model. First we have to define the model. In the present example it is a simple two-sample t-test design (for further details, please refer to the SPM manual)
    - Click on `Basic Models` button in the main SPM window
    - Directory: choose the directory were data will be written (e.g. *workspace*)
