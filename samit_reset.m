@@ -93,13 +93,17 @@ for i = 1:numel(files)
 
 %% PMOD NIfTI Fix
 %   PMOD saves the files with anterior/posterior flip, as compared with SPM
-        M_pmod = diag([1 -1 1]);
+%        M_pmod = diag([1 -1 1]);
         [A, ~ , B] = svd(M(1:3,1:3));
         Pmod = A*B';
-        if isequal(M_pmod, Pmod)
+%        if isequal(M_pmod, Pmod)
+        if Pmod(2,2) == -1
             M(2,:) = M(2,:) * -1;
+            V.mat = M;
+            
             Y = spm_read_vols(V);
             Y = flip(Y, 2); % Flip data A/P
+            
             spm_write_vol(V,Y);
         end
         
