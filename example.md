@@ -32,24 +32,24 @@ In this section we will go through all the steps needed to perform the data anal
 6. Define the location of the ‘origin’. In this data set the current location of the origin is in the center of the image. This information can be checked using the `Display` option in SPM. In SAMIT interface, press in the `Bregma` button and select all the images located in the *HSE* and *Healthy* folders. This process will relocate position of origin in the image close to where bregma is expected.
 
 7. An automatic registration of the images was performed during its pre-processing. The alignment between images can be observed by selecting several images with `Check Reg` in the SPM interface. Nevertheless, we are going to perform again the automatic registration process for a better alignment with the template.
-   1. Select the `almost rigid body` option in the *‘Spatial Registration’* section
-   2. Click in `Normalise multimple images`
-   3. Select all the images from the *Healthy* and *HSE* folders
-   4. Select the tracer-specific template (*[11C]PK11195_Wistar_Template.nii*) located inside the SAMIT folder. The new images will be located in the same folder than the original ones, but with the prefix **w**
+- Select the `almost rigid body` option in the *‘Spatial Registration’* section
+- Click in `Normalise multimple images`
+- Select all the images from the *Healthy* and *HSE* folders
+- Select the tracer-specific template (*[11C]PK11195_Wistar_Template.nii*) located inside the SAMIT folder. The new images will be located in the same folder than the original ones, but with the prefix **w**
 
 8. Normalize uptake: Information about the injected dose and the weight of the animals is provided in the file *SUV table.txt*
-   1. Click on `Create table`
-   2. Select all the files created recently with the prefix *w*
-   3. Select a name for the new file that will be created
-   4. Open the file with a text or spreadsheet editor. Fill the information according to the one provided in *SUV table.txt*. No data was collected for the glucose level, so there is no need for the last column and it can be removed. Save the file as *tabulated text* file or as *Excel* file
-   5. Select the image units. In this study, the original images were acquired in *Bq/cc*
-   6. Select the normalization procedure. For this example we will use the *SUV (default)* option
-   7. Click in `Create normalized images`. The new images will be located in the same folder than the previous ones, but including the suffix **-SUV**
+- Click on `Create table`
+- Select all the files created recently with the prefix *w*
+- Select a name for the new file that will be created
+- Open the file with a text or spreadsheet editor. Fill the information according to the one provided in *SUV table.txt*. No data was collected for the glucose level, so there is no need for the last column and it can be removed. Save the file as *tabulated text* file or as *Excel* file
+- Select the image units. In this study, the original images were acquired in *Bq/cc*
+- Select the normalization procedure. For this example we will use the *SUV (default)* option
+- Click in `Create normalized images`. The new images will be located in the same folder than the previous ones, but including the suffix **-SUV**
 
 9. Apply a mask to the whole brain. This step will avoid the influence of uptake outside the brain during the smoothing procedure, and it will avoid errors if global normalization is used during the statistical model
-   1. Click in the `Brain Mask` button
-   2. Select the images to which apply the mask (i.e. those with the suffix *–SUV*)
-   3. The new images will be located in the same folder than the previous ones with the prefix **m**
+- Click in the `Brain Mask` button
+- Select the images to which apply the mask (i.e. those with the suffix *–SUV*)
+- The new images will be located in the same folder than the previous ones with the prefix **m**
 
 10. Apply smoothing to the image
 - Click in `Smooth` button from the SPM interface
@@ -60,40 +60,36 @@ In this section we will go through all the steps needed to perform the data anal
 - The new images will be located in the same folder than the previous ones with the prefix *s*. These are the final images to be used in the voxel-based analysis
 
 11. Statistical model. In this section we are going to define the statistical model, estimate the values and display the results
-  
    1. Basic model. First we have to define the model. In the present example it is a simple two-sample t-test design (for further details, please refer to the SPM manual)
- 
-     1. Click on `Basic Models` button in the main SPM window
-     2. Directory: choose the directory were data will be written (e.g. *workspace*)
-     3. Select the *Design* as *Two-sample t-test*
-     4. Select the Healthy group as *Group 1 scans*
-     5. Select the HSE group as *Group 2 scans*
-     6. Select *Explicit Mask*, using the whole brain mask located in SAMIT folder (i.e. *Schwarz_intracranialMask.nii*)
+   - Click on `Basic Models` button in the main SPM window
+   - Directory: choose the directory were data will be written (e.g. *workspace*)
+   - Select the *Design* as *Two-sample t-test*
+   - Select the Healthy group as *Group 1 scans*
+   - Select the HSE group as *Group 2 scans*
+   - Select *Explicit Mask*, using the whole brain mask located in SAMIT folder (i.e. *Schwarz_intracranialMask.nii*)
    
    2. Estimate the model
-
-     1. In the menu of the Batch Editor select `SPM > Stats > Model estimation`
-     2. Select the new module `Model estimation` from the left section of the Batch Editor
-     3. Click on `Dependency` button, located in the lower right section
-     4. Select the *Factorial design* option
-     5. Save the batch for future modifications
-     6. Run the batch: Click on the icon of a green arrow or select `File > Run Batch`
+   - In the menu of the Batch Editor select `SPM > Stats > Model estimation`
+   - Select the new module `Model estimation` from the left section of the Batch Editor
+   - Click on `Dependency` button, located in the lower right section
+   - Select the *Factorial design* option
+   - Save the batch for future modifications
+   - Run the batch: Click on the icon of a green arrow or select `File > Run Batch`
  
    3. Show the results
-    
-     1. Click on `Results` button in the main SPM window
-     2. Select the *SPM.mat* file located in the directory selected previously during the especification of the model
-     3. Click on `Define a new contrast` <img src="http://s3-eu-west-1.amazonaws.com/learningspacebucket/umcgmic/images/images/000/000/260/original/spm-contrast_manager.png?1430581602" alt="Define Contrast" style="float:right;border:1em;width:50%;margin:1em">
-     4. In the name type *Healthy &lt; HSE*
-     5. Select: *t-contrast*
-     6. Contrast: *-1 1*
-     7. Click on `OK`
-     8.	Select the contrast and press `Done`
-     9. Apply masking: `none`
-     10. Title for comparison: leave the current title and press enter
-     11. Choose the p value adjustment (FWE or uncorrected). In this example select `none`
-     12. Choose the p value. In this example type: *0.001*
-     13. Extent threshold (voxels). In this example type: *200*
+    - Click on `Results` button in the main SPM window
+    - Select the *SPM.mat* file located in the directory selected previously during the especification of the model
+    - Click on `Define a new contrast` <img src="http://s3-eu-west-1.amazonaws.com/learningspacebucket/umcgmic/images/images/000/000/260/original/spm-contrast_manager.png?1430581602" alt="Define Contrast" style="float:right;border:1em;width:50%;margin:1em">
+    - In the name type *Healthy &lt; HSE*
+    - Select: *t-contrast*
+    - Contrast: *-1 1*
+    - Click on `OK`
+    - Select the contrast and press `Done`
+    - Apply masking: `none`
+    - Title for comparison: leave the current title and press enter
+    - Choose the p value adjustment (FWE or uncorrected). In this example select `none`
+    - Choose the p value. In this example type: *0.001*
+    - Extent threshold (voxels). In this example type: *200*
  
    4. Results are presented in a maximum intensity projection (MIP) display on a glass rat brain. Since the MRI rat template was spatially aligned with the Paxinos atlas the resulting coordinates are equivalent to those in the atlas
  
