@@ -31,11 +31,11 @@ In this section we will go through all the steps needed to perform the data anal
 
 6. Define the location of the ‘origin’. In this data set the current location of the origin is in the center of the image. This information can be checked using the `Display` option in SPM. In SAMIT interface, press in the `Bregma` button and select all the images located in the *HSE* and *Healthy* folders. This process will relocate position of origin in the image close to where bregma is expected.
 
-7. An automatic registration of the images was performed during its pre-processing. The alignment between images can be observed by selecting several images with `Check Reg` in the SPM interface. Nevertheless, we are going to perform again the automatic registration process for a better alignment with the template.
-  1. Select the `almost rigid body` option in the *‘Spatial Registration’* section
-  2. Click in `Normalise multimple images`
-  3. Select all the images from the *Healthy* and *HSE* folders
-  4. Select the tracer-specific template (*[11C]PK11195_Wistar_Template.nii*) located inside the SAMIT folder. The new images will be located in the same folder than the original ones, but with the prefix **w**
+7. TESTAn automatic registration of the images was performed during its pre-processing. The alignment between images can be observed by selecting several images with `Check Reg` in the SPM interface. Nevertheless, we are going to perform again the automatic registration process for a better alignment with the template.
+   1. Select the `almost rigid body` option in the *‘Spatial Registration’* section
+   2. Click in `Normalise multimple images`
+   3. Select all the images from the *Healthy* and *HSE* folders
+   4. Select the tracer-specific template (*[11C]PK11195_Wistar_Template.nii*) located inside the SAMIT folder. The new images will be located in the same folder than the original ones, but with the prefix **w**
 
 8. Normalize uptake: Information about the injected dose and the weight of the animals is provided in the file *SUV table.txt*
  1. Click on `Create table`
