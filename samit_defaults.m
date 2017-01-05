@@ -29,7 +29,7 @@ switch atlas
         pathname = 'Schwarz_rat';
         MRI	     = 'Schwarz_T2w.nii';
         mask     = 'Schwarz_intracranialMask.nii';
-        bregma   = [0, 4.9, 4.3];
+        bregma   = [-0.1, 4.9, 4.5];
              		  
 	case 'Ma'
 		% Mouse (Ma et al. 2005, 2008)        

@@ -32,7 +32,7 @@ end
 if d ~= false
     display(' ');
     display('SAMIT: Creating SUV images...');
-    display('----------------------------------------');
+    display('-----------------------------');
 end
 
 
@@ -79,7 +79,8 @@ switch ext
         num = zeros(size(num0));
         for i = 1:size(num0,1)
             for j = 1:size(num0,2)
-                num(i,j) = str2num(num0{i,j});
+                %num(i,j) = str2num(num0{i,j});
+                num(i,j) = isnumeric(str2num(num0{i,j}));
             end
         end
 
@@ -146,7 +147,7 @@ for i = 1:nfiles
             c = spm_summarise(file,mask,@mean); % Calculate average value for whole brain uptake
             
             f = ['i1/' num2str(c)];      % Formula
-            descrip = ['SUVw: Dose ' num2str(num(i,1)) 'MBq; Weight ' num2str(w) 'gr; Whole brain uptake ' num2str(d) ];
+            descrip = ['SUVw: Whole brain average ' num2str(c) ];
         
         case 'IDg'
             f = ['100 * i1/' num2str(d)];   % Formula
