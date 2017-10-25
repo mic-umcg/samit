@@ -81,13 +81,11 @@ set(findall(handles.tag_analysis,'-property','Enable'),'Enable','off');
 
 
 global defaults            % Allows to open samit without SPM running
-if isempty(defaults)
+if isempty(defaults) || ~isfield(defaults,'modality')
     spm('defaults','PET');
-    handles.modality = spm('CheckModality'); % Saves SPM modality
-    clear defaults;
-else
-    handles.modality = spm('CheckModality');
 end
+handles.modality = spm('CheckModality'); % Saves SPM modality
+clear defaults
 guidata(hObject, handles);
 
 % UIWAIT makes samit wait for user response (see UIRESUME)
