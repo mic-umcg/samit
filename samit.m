@@ -22,7 +22,7 @@ function varargout = samit(varargin)
 
 % Edit the above text to modify the response to help samit
 
-% Last Modified by GUIDE v2.5 02-Apr-2015 14:27:14
+% Last Modified by GUIDE v2.5 23-Oct-2017 15:08:12
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -55,12 +55,30 @@ function samit_OpeningFcn(hObject, eventdata, handles, varargin)
 % Choose default command line output for samit
 handles.output = hObject;
 
-% Update handles structure
+%% Update handles structure and visibility
+
+% List of available atlases
+AtlasList = readtable('samit_atlases.txt');
+handles.AtlasList = AtlasList.AtlasName;
 handles.atlas   = 'none';  % Creates handles.atlas variable
 handles.gs      = 5.5;     % Creates handles.gs (Defaults glucose: 5.5)
-handles.imgtype = 'none';  % Units in the image
-handles.regtype = 'rigid'; % Regularisation type
-handles.otype   = 'SUV';   % Standarization procedure of the uptake
+handles.imgType = 'Bq';    % Units in the image
+handles.regType = 'rigid'; % Regularisation type
+handles.nType   = 'SUV';   % Standarization procedure of the uptake
+handles.fixType = 'center';% Standarization procedure of the uptake
+
+% Update GUI with Atlas info
+X = {};
+X{1} = get(handles.tag_atlas_popup,'String');
+for i=1:size(AtlasList,1)
+    X{i+1} = [AtlasList.AtlasName{i},' - ', AtlasList.Details{i}];
+end
+
+set(handles.tag_atlas_popup,'String',X);
+set(findall(handles.tag_tools,'-property','Enable'),'Enable','off');
+set(findall(handles.tag_templates,'-property','Enable'),'Enable','off');
+set(findall(handles.tag_analysis,'-property','Enable'),'Enable','off');
+
 
 global defaults            % Allows to open samit without SPM running
 if isempty(defaults)
@@ -90,38 +108,38 @@ disp('Small Animal Molecular Imaging Toolbox (SAMIT)');
 disp('==============================================');
 disp(' ');
 
+% % --- Splash Screen ---
+% % Shows splash screen  
+% WS   = spm('WinScale');		% Window scaling factors
+% X = imread(fullfile(mypath,'images','NGMBlogo.png'));
+% aspct = size(X,1) / size(X,2);
+% ww = 400;
+% srect = [200 300 ww ww*aspct] .* WS;   % Scaled size splash rectangle
+% h = figure('visible','off',...
+% 	       'menubar','none',...
+% 	       'numbertitle','off',...
+% 	       'name','Welcome to SAMIT',...
+% 	       'pos',srect);
+% im = image(X);
+% %colormap(map);
+% ax = get(im, 'Parent');
+% axis off;
+% axis image;
+% axis tight;
+% set(ax,'plotboxaspectratiomode','manual',...
+%        'unit','pixels',...
+%        'pos',[0 0 srect(3:4)]);
+% set(h,'visible','on');
+% pause(3);
+% close(h);
+% % --- end splash
+
 % ---- NGMB Logo ----
 logo = imread(fullfile(mypath,'images','NGMBlogo2.png')); % Read logo image
 image(logo);
 axis off;
 axis image;
 %axis tight;
-
-% --- Splash Screen ---
-% Shows splash screen  
-WS   = spm('WinScale');		% Window scaling factors
-X = imread(fullfile(mypath,'images','NGMBlogo.png'));
-aspct = size(X,1) / size(X,2);
-ww = 400;
-srect = [200 300 ww ww*aspct] .* WS;   % Scaled size splash rectangle
-h = figure('visible','off',...
-	       'menubar','none',...
-	       'numbertitle','off',...
-	       'name','Welcome to SAMIT',...
-	       'pos',srect);
-im = image(X);
-%colormap(map);
-ax = get(im, 'Parent');
-axis off;
-axis image;
-axis tight;
-set(ax,'plotboxaspectratiomode','manual',...
-       'unit','pixels',...
-       'pos',[0 0 srect(3:4)]);
-set(h,'visible','on');
-pause(3);
-close(h);
-% --- end splash
 
 % --- Outputs from this function are returned to the command line.
 function varargout = samit_OutputFcn(hObject, eventdata, handles) 
@@ -158,58 +176,77 @@ function tag_atlas_popup_Callback(hObject, eventdata, handles)
 % Determine the selected data set
 val = get(handles.tag_atlas_popup, 'Value');
 
-% Small Animal Atlases
+%% Small Animal Atlases
+
+% Turn on/off options
 switch val
     case 1 % No selection
-        set(handles.tag_origin_bregma,'Enable','off');
-        set(handles.tag_mask_button,'Enable','off');
-        set(handles.tag_templates_construction,'Enable','off');
-        set(handles.tag_analysis_VOI,'Enable','off');
+        set(findall(handles.tag_tools,'-property','Enable'),'Enable','off');
+        set(findall(handles.tag_templates,'-property','Enable'),'Enable','off');
+        set(findall(handles.tag_analysis,'-property','Enable'),'Enable','off');
+        handles.atlas = 'none';
 
-    case 2 % Schwarz Rat Atlas
-        handles.atlas = 'Schwarz';
-        set(handles.tag_origin_bregma,'Enable','on');        
-        set(handles.tag_mask_button,'Enable','on');
-        set(handles.tag_templates_construction,'Enable','on');
-        set(handles.tag_analysis_VOI,'Enable','on');
-        samit_defaults(handles.atlas);
-
-    case 3 % Ma Mouse Atlas
-        handles.atlas = 'Ma';
-        set(handles.tag_origin_bregma,'Enable','off');  % Bregma is not defined in this template
-        set(handles.tag_mask_button,'Enable','on');
-        set(handles.tag_templates_construction,'Enable','on');
-        set(handles.tag_analysis_VOI,'Enable','on');
+    otherwise
+        set(findall(handles.tag_tools,'-property','Enable'),'Enable','on');
+        set(findall(handles.tag_templates,'-property','Enable'),'Enable','on');
+        set(findall(handles.tag_analysis,'-property','Enable'),'Enable','on');
+        set(handles.tag_reorient_run,'Enable','off');
+        set(handles.tag_multiNormalise,'Enable','off');
+        set(handles.tag_uptake_create,'Enable','off');
+        set(handles.tag_uptake_gs,'Enable','off');
+        
+        handles.atlas = handles.AtlasList{val-1};
         samit_defaults(handles.atlas);
 end
+
+set(handles.tag_reorient_popup,'Value',1);
+set(handles.tag_reg_popup,'Value',1);
+set(handles.tag_uptake_units,'Value',1);
+
 guidata(hObject, handles);
 
 % ========== Image Pre-Processing Section =================
 
-% === Reset image
-% --- Executes on button press in tag_reset_button.
-function tag_reset_button_Callback(hObject, eventdata, handles)
-% hObject    handle to tag_reset_button (see GCBO)
+% === Reorient images
+% --- Executes during object creation, after setting all properties.
+function tag_reorient_popup_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to tag_reorient_popup (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: popupmenu controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+% --- Executes on selection change in tag_reorient_popup.
+function tag_reorient_popup_Callback(hObject, eventdata, handles)
+% hObject    handle to tag_reorient_popup (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-samit_reset; % Reset image (transformation and origin)
 
+% Hints: contents = cellstr(get(hObject,'String')) returns tag_reorient_popup contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from tag_reorient_popup
+val = get(handles.tag_reorient_popup, 'Value'); % Determine the selected data set
 
-% === Coordinates of the origin
-% --- Executes on button press in tag_origin_center.
-function tag_origin_center_Callback(hObject, eventdata, handles)
-% hObject    handle to tag_origin_center (see GCBO)
+% Reorientation types
+switch val
+    case 1 % No selection
+        set(handles.tag_reorient_run,'Enable','off');
+    
+    otherwise
+        g = get(handles.tag_reorient_popup,'String');
+        handles.fixType = g{val};
+        set(handles.tag_reorient_run,'Enable','on');
+end
+guidata(hObject, handles);
+
+% --- Executes on button press in tag_origin_reorient_run.
+function tag_reorient_run_Callback(hObject, eventdata, handles)
+% hObject    handle to tag_reorient_run (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-samit_origin('center', handles.atlas);  % Origin coordinates: Center of the image
-
-% --- Executes on button press in tag_origin_bregma.
-function tag_origin_bregma_Callback(hObject, eventdata, handles)
-% hObject    handle to tag_origin_bregma (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-samit_origin('bregma',handles.atlas);  % Origin coordinates: Bregma (Rat)
-
+samit_reorient(handles.atlas, handles.fixType);
 
 % === Spatial registration
 % --- Executes during object creation, after setting all properties.
@@ -233,13 +270,13 @@ switch val
     case 1 % No selection
         set(handles.tag_multiNormalise,'Enable','off');
     case 2 % No regularisation
-        handles.regtype = 'rigid';
+        handles.regType = 'rigid';
         set(handles.tag_multiNormalise,'Enable','on');
     case 3 % Almost rigid body (default)
-        handles.regtype = 'subj';
+        handles.regType = 'subj';
         set(handles.tag_multiNormalise,'Enable','on');
     case 4 % inter-subject registration
-        handles.regtype = 'none';
+        handles.regType = 'none';
         set(handles.tag_multiNormalise,'Enable','on');
 end
 guidata(hObject, handles);
@@ -250,7 +287,7 @@ function tag_multiNormalise_Callback(hObject, eventdata, handles)
 % hObject    handle to tag_multiNormalise (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-samit_multiNormalise(handles.regtype, handles.atlas);
+samit_multiNormalise(handles.regType, handles.atlas);
 
 
 % === Normalize uptake
@@ -284,22 +321,22 @@ switch val
     case 1 % No selection
         set(handles.tag_uptake_create,'Enable','off');
     case 2 % Bq
-        handles.imgtype = 'Bq';
+        handles.imgType = 'Bq';
         if handles.gs > 0
             set(handles.tag_uptake_create,'Enable','on');
         end
     case 3 % kBq
-        handles.imgtype = 'kBq';
+        handles.imgType = 'kBq';
         if handles.gs > 0
             set(handles.tag_uptake_create,'Enable','on');
         end
     case 4 % MBq
-        handles.imgtype = 'MBq';
+        handles.imgType = 'MBq';
         if handles.gs > 0
             set(handles.tag_uptake_create,'Enable','on');
         end
     case 5 % mCi
-        handles.imgtype = 'mCi';
+        handles.imgType = 'mCi';
         if handles.gs > 0
             set(handles.tag_uptake_create,'Enable','on');
         end
@@ -325,16 +362,16 @@ val = get(handles.tag_uptake_type, 'Value'); % Determine the selected data set
 
 switch val
     case 1 % 'SUV' Standarized Uptake Value (default)
-        handles.otype = 'SUV';
+        handles.nType = 'SUV';
         set(handles.tag_uptake_gs,'Enable','off');
     case 2 % 'SUVglc' SUV corrected for glucose
-        handles.otype = 'SUVglc';
+        handles.nType = 'SUVglc';
         set(handles.tag_uptake_gs,'Enable','on');
     case 3 % 'SUVw' SUV corrected for whole brain uptake
-        handles.otype = 'SUVw';
+        handles.nType = 'SUVw';
         set(handles.tag_uptake_gs,'Enable','off');
     case 4 % 'IDg'    Percentage of injected dose per gram
-        handles.otype = 'IDg';
+        handles.nType = 'IDg';
         set(handles.tag_uptake_gs,'Enable','off');
 end
 guidata(hObject, handles);
@@ -374,7 +411,7 @@ function tag_uptake_create_Callback(hObject, eventdata, handles)
 % hObject    handle to tag_uptake_create (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-samit_standarize_uptake(handles.atlas, handles.imgtype, handles.otype, handles.gs); % Run code
+samit_standarize_uptake(handles.atlas, handles.imgType, handles.nType, handles.gs); % Run code
 
 
 

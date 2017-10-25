@@ -1,0 +1,3 @@
+Specie,AtlasName,Details,Folder,MRI,Mask,Bregma
+Rat,Schwarz,Schwarz et al. 2006,Schwarz_rat,Schwarz_T2w.nii,Schwarz_intracranialMask.nii,-0.1 4.9 4.5
+Mouse,Ma,Ma et al. 2006 & 2008,Ma_mouse,Mouse_C57BL6_MRI_masked.nii,Mouse_C57BL6_brainmask.nii,0 0 0

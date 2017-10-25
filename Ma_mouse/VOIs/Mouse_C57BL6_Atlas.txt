@@ -1,0 +1,23 @@
+//Image: Mouse C57BL6 Atlas.nii
+// Ma et al. http://brainatlas.mbi.ufl.edu/
+//Index	Name
+1	Hippocampus
+2	Corpus callosum
+3	Caudate putamen
+4	Anterior commissure
+5	Globus pallidus
+6	Internal capsule
+7	Thalamus
+8	Cerebellum
+9	Superior colliculus
+10	Ventricles
+11	Hypothalamus
+12	Inferior colliculus
+13	Central gray
+14	Neocortex
+15	Amygdala
+16	Olfactory bulb
+17	Brainstem
+18	Rest of midbrain
+19	Basal forebrain and septum
+20	Fimbria

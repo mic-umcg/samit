@@ -5,7 +5,7 @@ function samit_VOI(atlas)
 %   FORMAT samit_VOI(atlas)
 %       atlas  - Small animal atlas (see 'samit_defaults')
 
-%   Version: 15.04 (29 April 2015)
+%   Version: 17.10 (24 October 2015)
 %   Author:  David Vallez Garcia
 %   Email:   samit@umcg.nl
 
@@ -13,8 +13,8 @@ function samit_VOI(atlas)
 %   v14.11:    Images are masked using spm_imcalc
 %   v15.02:    Calculation is done using spm_summarise
 %   v15.03:    Adjustment for SPM8 compatibility
-%              Adjusted to new samit_defaults        
-
+%              Adjusted to new samit_defaults
+%   v17.01:    Improved speed
 
 
 %% Display
@@ -22,52 +22,52 @@ display(' ');
 display('SAMIT: Extraction of VOIs data');
 display('------------------------------');
 
+%% Extract brain mask info from the atlas settings
+if ~exist('atlas','var')
+    %samit_def = samit_defaults('Schwarz'); % For debug only
+    error('No atlas selected!');
+else
+    samit_def = samit_defaults(atlas);
+end
+mask_file = samit_def.mask;
+clear samit_def;
 
 %% Reference VOIs
-VOIs = spm_select(1,'image','Please, select the image containing the VOIs...');
-VOIs = deblank(VOIs);
+VOI = spm_select(1,'image','Please, select the image containing the VOIs...');
+VOI = deblank(VOI);
 
-if ~isempty(VOIs)
+if isempty(VOI)
+    % Only the whole brain VOI will be used if no file was selected
+    VOI_names = {'Whole_brain'};  
+    nvois = 1;                        % Only Whole Brain
     
-    VOIs_v   = unique(spm_read_vols(spm_vol(VOIs))); % Array with numbers in VOI image
+else
+    % Load VOI info
+    VOI_V = spm_vol(VOI);
+    VOI_Y = spm_read_vols(VOI_V);
+    VOI_n = unique(VOI_Y);          % Array with numbers in VOI image
+    VOI_n = VOI_n(VOI_n ~= 0);      % Remove zero
+    nvois = numel(VOI_n) + 1;       % Total number of regions + Wholebrain
     
-    if isequal(VOIs_v(1),0)
-        VOIs_v = VOIs_v(2:end);                      % Number zero is removed
-    end 
-        
-    % Load the names for each VOI
-    VOIs_txt = spm_file(VOIs,'ext','.txt');
+    % Load the names for each region in the VOI
+    VOI_txt = spm_file(VOI,'ext','.txt');
     
-    if ~exist(VOIs_txt,'file')  % If there is no file with the name of each region
-       for c=1:size(VOIs_v,1)
-           C{c,1} = ['VOI_',num2str(c)];
-       end
-       VOIs_names = ['Whole_brain'; C];
+    if ~exist(VOI_txt,'file')  % If there is no file with the name of each region
+        VOI_names = ['WholeBrain'; cellstr(strcat('VOI_', num2str(VOI_n,'%02d')))];
     else                        % If there is a file with the info
-        fid = fopen(VOIs_txt);
-        C = textscan(fid, '%d %s', 'Delimiter', '\t', 'CommentStyle', '#');
+        fid = fopen(VOI_txt);
+        C = textscan(fid, '%d %s', 'Delimiter', '\t', 'CommentStyle', '//');
         fclose(fid);
-        VOIs_names = ['Whole_brain'; C{2}];
-    end
-    
-    nvois = size(VOIs_v,1) + 1;        % Number of VOIs + Whole Brain
-    
-   
-else % Only the whole brain VOI will be used if no file was selected
-    VOIs_names = {'Whole_brain'};
-    nvois =  1;                        % Only Whole Brain
+        VOI_names = ['WholeBrain'; cellstr(C{2})];
+    end   
 end
 
 
 %% Whole brain VOI
-if ~exist('atlas','var')
-    samit_def = samit_defaults; % Load default values
-else
-    samit_def = samit_defaults(atlas);
-end
+mask_V = spm_vol(mask_file);
+mask_Y = spm_read_vols(mask_V);
+mask_Y(mask_Y~=0) = 1;      % If several regions, all merged into one
 
-mask = samit_def.mask;
-clear samit_def;
 
 %% Files to analyze
 files = spm_select(Inf,'image','Please, select the images to be analysed.');
@@ -76,6 +76,7 @@ if isempty(files)   % Error check
     return
 end
 files = deblank(files);
+V = spm_vol(files);     % SPM volumes
 
 %% Name to store the results
 [results_name, results_path] = uiputfile('*.txt', 'New file to store the results...');
@@ -86,10 +87,9 @@ if isequal(results_name,0) || isequal(results_path,0)
 end
 results_name = spm_file(results_name,'basename');  % Removes the extension
 
-%% Initialize variables
-nfiles = size(files,1);                            % Number of files to analyse
-M = zeros(nvois,4,nfiles);                         % Matrix with results
-temp = 'temp_img.nii';
+%% Initialize variables                          
+nfiles = numel(V);                             % Number of files to analyse
+M = cell(nvois*nfiles,8);                      % Matrix with results
 
 %% Start Progress bar
 w1 = 'Extracting VOIs data: ';
@@ -97,68 +97,55 @@ multiWaitbar('CloseAll');
 multiWaitbar(w1);
 
 %% Evaluation of the VOIs
-
-for v=1:nvois   
-    multiWaitbar(w1, 'Value', v/(nvois));    % Waitbar
+l = 1;
+for f = 1:nfiles
+    multiWaitbar('Image', 'Value', f/nfiles);    % Waitbar
     
-    if isequal(v,1)
-        Vo = mask;
-        r = 0;  % Init counter
-        r = double(r);
-    else
-        Vo = temp;
-        r = r + 1;
+    for i=1:nvois
+        multiWaitbar(w1, 'Value', i/nvois);    % Waitbar
         
-        if isequal(spm('Ver'),'SPM12')
-            spm_imcalc(VOIs,Vo,'i1 == r',{},r);
+        % Load mask
+        if i==1                 % Load BrainMask
+            Vm = mask_V;
+            Ym = mask_Y;
+            voi = 1;
         else
-            Vi = spm_vol(VOIs);
-            vol = Vi;
-            vol.fname = temp;
-            spm_imcalc(Vi,vol,'i1 == r',{},r);
+            Vm = VOI_V;
+            Ym = VOI_Y;
+            voi = i - 1;
         end
+        
+        % Construct vector of the region
+        idx = find(Ym == voi);
+        plane   = Vm.dim(1)*Vm.dim(2);
+        voi_x   =      mod(idx, Vm.dim(1));  % + 1 --> debugging found this off by one
+        voi_y   =  fix(mod(idx, plane ) / Vm.dim(1)) +1;
+        voi_z   =  fix(    idx/ plane ) +1;
+        XYZ = [ voi_x, voi_y, voi_z, ones(length(idx), 1) ]';
+        X = spm_data_read(V(f), 'xyz', XYZ);
+        
+        M{l,1} = spm_file(V(f).fname, 'filename'); % Name file
+        M{l,2} = f;                                % Number of the file
+        M{l,3} = i;                                % Number for the Region
+        M{l,4} = VOI_names{i};                     % Name of the Region
+        M{l,5} = mean(X);                          % Mean
+        M{l,6} = std(X);                           % Standard deviation
+        M{l,7} = min(X);                           % Min
+        M{l,8} = max(X);                           % Max
+                
+        l = l + 1 ;
     end
-    
-    for f = 1:nfiles
-        multiWaitbar('Image', 'Value', f/nfiles);    % Waitbar
-        M(v,1,f) = spm_summarise(files(f,:),Vo,@mean);
-        M(v,2,f) = spm_summarise(files(f,:),Vo,@std);
-        M(v,3,f) = spm_summarise(files(f,:),Vo,@min);
-        M(v,4,f) = spm_summarise(files(f,:),Vo,@max);
-    end
-end
-
-if exist(temp,'file')
-    delete(temp);
 end
 
 
 %% Save results
+T = cell2table(M);
+T.Properties.VariableNames = {'FileName' 'File_idx' 'VOI' 'VOI_idx' 'Mean' 'SD' 'Min' 'Max'};
+
 cd(results_path);
-
-save([results_name,'.mat'], 'M');
-
-% Save txt file
-fid = fopen([results_name '.txt'], 'w');
-
-fprintf(fid, 'File Name \t');
-for h = 1:nvois
-    fprintf(fid, '%s\t', VOIs_names{h});    % VOI name
-end
-fprintf(fid, '\r\n');                       % End row
-
-for f = 1:nfiles
-    fprintf(fid, '%s\t', spm_file(files(f,:),'basename'));       % File name
-    
-    for h = 1:nvois
-        fprintf(fid, '%12.8f\t', M(h,1,f)); % VOI mean
-    end
-    fprintf(fid, '\r\n');                   % End row
-
-end
-
-fclose(fid);
-
+save([results_name,'.mat'], 'T');
+%writetable(T, [results_name,'.xlsx']);
+writetable(T, [results_name,'.txt']);
 multiWaitbar('CloseAll');
 
 end
