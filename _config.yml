@@ -8,18 +8,18 @@ permalink:           pretty
 # Setup
 title:               SAMIT
 tagline:             'Small Animal Molecular Imaging Toolbox'
-description:         'The aim of this toolbox is to facilitate the construction of new tracer specific templates and the subsequent voxel-based analysis of small animal PET and SPECT brain images.'
+description:         'The aim of this toolbox is to facilitate voxel-based and/or volume-based analysis of small animal PET and SPECT brain images. It also provides an automatized procedure for the construction of new tracer-specific templates for the spatial registration of small animal PET and SPECT brain images.'
 url:                 http://http://mic-umcg.github.io
 baseurl:             "/samit"
 paginate:            5
 
 # About/contact
 author:
-  name:              David Vállez
+  name:              D Vállez García
   email:             samit@umcg.nl
 
 # Custom vars
-version:             v1.2
+version:             v1.3
 zenodo:              https://zenodo.org/record/14785
 
 # Exclude these files from _site

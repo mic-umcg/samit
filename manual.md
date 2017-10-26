@@ -3,66 +3,73 @@ layout: page
 title: SAMIT Manual
 ---
 # Manual
-The aim of this toolbox is to facilitate the construction of new tracer specific templates and the subsequent voxel-based and/or volume-of-interest based analysis of small animal PET and SPECT brain images. After its installation, the SAMIT toolbox will be available from the `toolbox` pull-down in the main SPM window.
-<img src="http://s3-eu-west-1.amazonaws.com/learningspacebucket/umcgmic/images/images/000/000/258/original/samit.png?1430497543" alt="SAMIT interface" style="align:right;float:right;width:30%;margin:1em">
+The aim of this toolbox is to facilitate the voxel-based and volume-based analysis, and the automatized construction of new tracer-specific templates for small animal PET and SPECT brain images.
+The toolbox is intended to work in combination with Statistical Parametric Mapping ([SPM]) software, and most of the SAMIT functions require the presence of this software in the [MATLAB] environment.
+
+<img src="{{ site.baseurl }}/images/samit1.3.png" alt="SAMIT interface" style="align:right;float:right;width:30%;margin:1em">
+
 
 ## Select Atlas
-The first step is to define the animal species by selecting the desired atlas. This step is needed to preload some default values.
+The very first step to use SAMIT is to select the desired animal atlas. This step is used to populate some default values and to allow the interaction with the rest of the options.
 
 ## Image pre-processing
 
 ### Spatial normalization
-1. Reset orientation: This function removes any previous transformation stored in the image and prepares the image for further processing
-2. Coordinates of the “origin”: The location of the coordinates system in the image is a crucial step while handling the images. The zero or “origin” of this coordinates is usually located in bregma in small animals brains. If bregma is not properly defined in the atlas, the center of the image is an alternative reference
-3. Spatial registration. This section of the toolbox use the normalization process implemented in SPM8, and allows the selection of multiple images at once.
-    1. Registration type (for further details see ‘spm_affreg’ function in SPM)
-    2. Normalize multiple images
-
->Take in consideration that initial alignment between the images must be within about 4 cm and about 15 degrees in order for SPM to find the optimal solution, and that the best results will be obtained when the images and the target template have similar dimensions.
+1. **Reorient**. This option allows reorienting images that were previously registered using other software packages, e.g. [PMOD] or [VINCI]. It allows basic operations such as to relocate the coordinates system of the image or reorient the image in the direction expected by SPM.
+   - *PMOD2SPM*: This option allows to reorient the images created in PMOD to the orientation expected in SPM.
+   - *SPM2PMOD*: In this case, the images in SPM space are reoriented into PMOD space.
+   - *VINCI*: The NIfTI files created in VINCI present an error in the stored transformation matrix, which can cause problems with the voxel size and the orientation in SPM. This simple fix solves the issue.
+   - *Bregma*: The location of the coordinates system in the images are a crucial step while handling the images. The zero or "origin" of the coordinates system is located in frequently located in bregma in the small animals, but not all the animal template follow this recommendation.
+   - *Center*: If bregma is not properly defined in the atlas, the center of the image is a good alternative for coordinates system.
+2. **Spatial registration**. This section of the toolbox use the normalization process implemented in SPM8, and allows the selection of multiple images at once.
+   - Registration type (for further details see 'spm_affreg' from SPM)
+   - Normalize multiple images
+> ***Notes***: This step is not necessary if the images were previously aligned to the template in another software package  (e.g. PMOD or VINCI). The best results are obtained when the images and the reference template have similar dimensions and a good initial overlap.
 
 ### Normalize uptake
-This section allows the normalization of the uptake in multiple images at once. This procedure has two steps.
-
-1. Create the table: The input file can be created manually or with the help of `Create table` button. It will ask for the images to be normalized and it will generate a template file. The content of this file can be filled with any text or spreadsheet editor, and saved as tabulated file (*.txt*) or Excel file (*.xls / .xlsx*).
+This section allows the normalization of the uptake values in multiple images. The procedure has two steps:
+1. **Create table**. The input file can be created manually or with the help of `Create table` button. It will ask for the images that will be normalized, and it will generate a table. The content of this table can be filled with any text or spreadsheet editor. When completed, the table can be saved as a tabulated file (\*.txt) or Excel file (\*.xls / \*.xlsx). 
    1. First column: Full path and name of the image
    2. Second column: Activity of the injected tracer (MBq)
    3. Third column: Animal body weight (gr)
    4. Fourth column: glucose level in blood (mmol/l)
-   <img src="http://s3-eu-west-1.amazonaws.com/learningspacebucket/umcgmic/images/images/000/000/259/original/samit_-_table.png?1430498605" alt="SUV Table" stye="align:center;margin:1em">
-2. Construction of new images
-   1. Image units: Select the units of the uptake represented in the image. 
-   2. Normalization type: 
-     * SUV (Standardized Uptake Values). Default option. The new image will have the suffix **–SUV**
-     * SUVglc (SUV corrected for blood glucose level).  The new image will have the suffix **–SUVglc**
-     * SUV whole brain. The SUV will be corrected for the mean uptake value of the whole brain. The new image will have the suffix **–SUVw**
-     * IDg (Percentage of injected dose per gram).  The new image will have the suffix **–IDg**
-3. Basal Glucose Plasma. This is the reference value for the glucose level
-4. Create normalized images. The program will ask for the file containing the table with all the information needed for the construction of the new images according to the parameters previously selected.
+   <img src="{{ site.baseurl }}/images/samit_table.png" alt="SUV Table" stye="align:center;margin:1em">
+  >***Note***: If the glucose was not measured, or it is not going to be used for the normalization, the whole column can be removed.
+ 2. **Construction of new images**
+    1. *Image units*: Select the radioactivity units used when the image was created.(*Note*: By default, PMOD software stores the images as kBq/cc)
+    2. *Normalization type*. 
+       - SUV (Standardized Uptake Values). The new image will have the suffix **–SUV**
+       - SUVglc (SUV corrected for blood glucose).  The new image will have the suffix **–SUVglc**
+       - SUV whole brain. The SUV will be corrected for the mean uptake value of the whole brain. The new image will have the suffix **–SUVw**
+       - IDg (Percentage of injected dose per gram).  The new image will have the suffix **–IDg**
+    3. *Basal Glucose Plasma*. The reference value for the glucose level (only available when SUVglc is selected).
+    4. *Create normalized images*. The new images will be created according to the parameters selected and the information probided in the file (table).
 
 ### Apply whole brain mask
-A new image will be created in the same location as the original one, removing the signal from the outside of the brain. The new images will have the prefix ‘m’ 
-
-## Templates
-The construction process to obtain tracer-specific PET and SPECT templates has been automatized, as described in [Vallez Garcia et al. 2015](http://dx.doi.org/10.1371/journal.pone.0122363). The program assumes that the images are already aligned between them in space and in its uptake. The first selected image will be defined as the reference, and all the other images will be aligned to this one in the first step of the template construction. It is recommended to check the images that will be used for the construction of the template with Check Image Registration (`Check Reg`) in SPM, to select the most appropriate reference image and to confirm that the images are correctly aligned between them.
-
-The steps performed by the program are:
-
-1. Spatial normalization of the selected images to the first one
-2. Construction of a mean symetrical image
-3. Co-registration of the symmetrical image to the reference MRI template
-4. Co-registration of the images used for the construction of the template with the parameters obtained in the previous step. This new images are saved with a prefix **r** and can be used for the evaluation of the template
-5. The final version of the template and its registration with the MRI is displayed
-
-Several files will be created when the construction of the template is completed:
-
-- *NameTemplate*_coreg.mat The co-registration matrix obtained in the step 3
-- *NameTemplate*_MRI_Size.nii. The new template with the same dimensions and voxel size as the reference MRI
-- *NameTemplate*_Original_Size.nii. The same template as before but preserving the original dimensions of the image. The co-registration matrix is stored in the file. This image can be used for the construction of other versions of the template with different dimension size.
-
-The evaluation of the registration accuracy of the images to the template can be performed by selecting `Evaluation of the template` in SAMIT. The previously constructed template must be selected (*_MRI_Size.nii*), followed by the new version of the images used for the construction of the template.
+A new image will be created removing the signal from the outside of the brain. The brain mask will be selected automatically according to the default parameters of the atlas. The new constructed images will have the prefix **m**.
 
 ## VOI Analysis
-The purpose of this function is to facilitate the extraction of the mean values from the images for further volume of interest (VOI) analysis. The program will ask you for the image containing the VOIs, followed by the image(s) from which to calculate the values. The results will be saved in a tabulated text file (\*.txt) and in a Matlab file (\*.mat).
+The purpose of this section is to facilitate the extraction of the descriptive values from the images, which can be further used for statistics analysis. The program will ask you for the image containing the Volumes of Interest (VOIs), and then will ask for the image(s) from where the values want to be calculated. The results will be saved in a tabulated text file (\*.txt) and in a Matlab file (\*.mat).
+>**Important:** The extraction of the results will proceed even if the files had different orientation or dimensions than the VOIs. Its recommend to use only images already aligned and with the same dimensions than the desired SAMIT template. The results obtained with images with different orientations and/or dimensions might not be correct!!
+
+## Templates
+The construction process to obtain tracer-specific PET and SPECT templates have been automatized as described in [Vallez Garcia et al. 2015](http://dx.doi.org/10.1371/journal.pone.0122363). The program assumes that the images are already aligned between them in space and uptake (e.g. in PMOD software and then reoriented to SPM). The first image selected in the list will be used as the reference image, and all the other images will be aligned to this one in the first step of the template construction.
+>**Note:** It is recommended to check the images that will be used for the construction of the template with Check Image Registration (`Check Reg`) in SPM, to select the most appropriate reference image and to confirm that the images are correctly aligned between them.
+
+The steps performed by the program are:
+1. Spatial normalization of the selected images to the first one.
+2. Construction of a mean symetrical image.
+3. Co-registration of the symmetrical image to the reference MRI template.
+4. Co-registration of the images used for the construction of the template with the parameters obtained in the previous step. This new images are saved with a prefix **r** and they can be used for the evaluation of the template.
+5. The final version of the template and its registration with the MRI is displayed.
+
+Several files will be created when the construction of the template is completed:
+- *NameTemplate_coreg.mat* The co-registration matrix obtained in the step 3
+- *NameTemplate_MRI_Size.nii* The new template with the same dimensions and voxel size as the reference MRI
+- *NameTemplate_Original_Size.nii* A version of the template but that preserves the original dimensions of the images. The co-registration matrix is stored in the file, but the image is not resliced. This image can be used for the construction of other versions of the template with different dimension size.
+
+The evaluation of the registration accuracy of the images to the template can be performed by selecting `Evaluation of the template`. The previously constructed template must be selected (\*_MRI_Size.nii) followed by the new version of the images used for the construction of the template.
+
 
 # References
 
@@ -75,3 +82,8 @@ The purpose of this function is to facilitate the extraction of the mean values 
 - Vállez Garcia et al., 2015. A Standardized Method for the Construction of Tracer Specific PET and SPECT Rat Brain Templates: Validation and Implementation of a Toolbox. PLoS One, 10(3) (doi: [10.1371/journal.pone.0122363](http://dx.doi.org/10.1371/journal.pone.0122363))
 - Casteels et al., 2013. Construction and evaluation of quantitative small-animal PET probabilistic atlases for [18F]FDG and [18F]FECT functional mapping of the mouse brain. PLoS One, 8(6) (doi: [10.1371/journal.pone.0065286](http://dx.doi.org/10.1371/journal.pone.0065286))
 - Casteels et al., 2006. Construction and evaluation of multitracer small-animal PET probabilistic atlases for voxel-based functional mapping of the rat brain. J Nucl Med, 47(11) ([link](http://jnm.snmjournals.org/content/47/11/1858.long))
+
+[SPM]: http://www.fil.ion.ucl.ac.uk/spm/
+[PMOD]: http://www.pmod.com/web/
+[VINCI]: http://www.nf.mpg.de/vinci3/
+[MATLAB]: https://www.mathworks.com/products/matlab.html
