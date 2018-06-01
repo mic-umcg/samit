@@ -1,0 +1,5 @@
+//Set of atlases used by SAMIT
+//Bregma is defined in mm
+Specie,AtlasName,Details,Folder,MRI,Mask,Bregma
+Rat,Schwarz,Schwarz et al. 2006,Schwarz_Rat,Schwarz_T2w.nii,Schwarz_intracranialMask.nii,-0.1 4.9 4.5
+Pig,C.H.Malbert,Female domestic pig (Sus scrofa domesticus),C.H.Malbert_Pig,Pig (CH.Malbert)-MR.nii,mask.nii,0.00 -10.00 -7.00

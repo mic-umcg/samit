@@ -17,47 +17,34 @@ function samit_def = samit_defaults(atlas)
 
 
 %% Atlas
-default_atlas = 'Schwarz'; % This atlas will be used as the defatult
 if ~exist('atlas','var');
-    atlas = default_atlas;
+    error('Please, specify the desired animal atlas')
 end
 
-switch atlas
-	case 'Schwarz'
-		% Rat (Schwarz et al. 2006)
-        % doi:10.1016/j.neuroimage.2006.04.214
-        pathname = 'Schwarz_rat';
-        MRI	     = 'Schwarz_T2w.nii';
-        mask     = 'Schwarz_intracranialMask.nii';
-        bregma   = [0, 4.9, 4.3];
-             		  
-	case 'Ma'
-		% Mouse (Ma et al. 2005, 2008)        
-        pathname = 'Ma_mouse';
-        MRI      = 'Mouse_C57BL6_MRI_masked.nii';
-        mask     = 'Mouse_C57BL6_brainmask.nii';
-        bregma   = [0 0 0];
+% Read available atlases and select atlas specific parameters
+AtlasList = readtable('samit_atlases.txt', ...
+    'ReadVariableNames', true, ...
+    'Delimiter',',', ...
+    'Format','%s %s %s %s %s %s %s', ...
+    'CommentStyle',{'//'});
 
-% Example fro new atlas
-%    case 'Atlas_name'
-%    % Add some description for the atlas        
-%       pathname = 'pathname';                    % Name of the path were atlas is located
-%       MRI      = 'SmallAnimal_MRI.nii';         % Name of the reference MRI
-%       mask     = 'SmallAnimal_brainmask.nii';   % Name of the brain mask
-%       bregma   = [0 0 0]; % Distance (mm) to bregma from center of MRI image
-        
-       
-end
+[~, idx] = ismember(atlas,AtlasList.AtlasName);
+
+pathname = AtlasList.Folder{idx};
+MRI      = AtlasList.MRI{idx};
+mask     = AtlasList.Mask{idx};
+bregma   = str2num(AtlasList.Bregma{idx});
 
 
 %% Define variables
 samit_def.dir                   = fileparts(which('samit'));
-samit_def.atlas                 = atlas;
+samit_def.specie                = AtlasList.Specie;
+samit_def.atlas                 = AtlasList.AtlasName;
+samit_def.details               = AtlasList.Details;
 samit_def.mri 					= fullfile(samit_def.dir,pathname,'templates',MRI);
 samit_def.mask 					= fullfile(samit_def.dir,pathname,'mask',mask);
-%samit_def.stats.results.mipmat  = cellstr(fullfile(samit_def.dir,'rat','MIP.mat'));
 samit_def.stats.results.mipmat 	= fullfile(samit_def.dir,pathname,'MIP.mat');
-samit_def.bregma                = bregma;
+samit_def.bregma                = spm_matrix(bregma);
 
 % Normalise
 samit_def.normalise.estimate.smosrc   = 0.8;

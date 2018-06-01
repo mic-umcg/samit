@@ -165,6 +165,25 @@ multiWaitbar(w1,'Value',1);               % Waitbar
 multiWaitbar(w4,'Value',1);               
 
 %% Final steps
+% Reslice Template with the original dimensions (size) [Check LR!!]
+VI = spm_vol('tmp_symmetrical.nii');
+VO = VI;
+
+vox    = sqrt(sum(VI.mat(1:3,1:3).^2));
+O = VI.mat \ [0 0 0 1]'; O=O(1:3)'; % Origin coordinates
+off = -vox .* O;
+VO.mat   = [vox(1) 0      0      off(1)
+            0      vox(2) 0      off(2)
+            0      0      vox(3) off(3)
+            0      0      0      1];
+VO = spm_create_vol(VO); % Not sure if needed
+for x3 = 1:VO.dim(3)
+        M  = inv(spm_matrix([0 0 -x3 0 0 0 1 1 1])*inv(VO.mat)*VI.mat);
+        v  = spm_slice_vol(VI,M,VO.dim(1:2),1);
+        VO = spm_write_plane(VO,v,x3);
+end;
+
+
 % Rename & move files
 movefile('tmp_symmetrical.nii', [template,'_Original_Size.nii']);
 movefile('rtmp_symmetrical.nii', [template,'_MRI_Size.nii']);

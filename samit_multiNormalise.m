@@ -85,6 +85,9 @@ for i = 1:nFiles
     VF = spm_vol(files(i,:));   % Image to be normalise
     prm = spm_normalise(template_vol,VF,'','','',samit_def.normalise.estimate);
     spm_write_sn(VF,prm,samit_def.normalise.write);
+% Save .mat file
+    matname   = spm_file(VF.fname, 'suffix', '_sn', 'ext','.mat');
+    save(matname, 'prm', spm_get_defaults('mat.format'));
 end
 
 multiWaitbar(w1, 'Close');
