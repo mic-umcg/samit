@@ -4,5 +4,5 @@
 // Image: Schwarz_hemispheres_LR.nii
 
 // Index	Name
-1	Left
-2	Right
+1	Right
+2	Left

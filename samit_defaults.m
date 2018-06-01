@@ -22,7 +22,12 @@ if ~exist('atlas','var');
 end
 
 % Read available atlases and select atlas specific parameters
-AtlasList = readtable('samit_atlases.txt');
+AtlasList = readtable('samit_atlases.txt', ...
+    'ReadVariableNames', true, ...
+    'Delimiter',',', ...
+    'Format','%s %s %s %s %s %s %s', ...
+    'CommentStyle',{'//'});
+
 [~, idx] = ismember(atlas,AtlasList.AtlasName);
 
 pathname = AtlasList.Folder{idx};

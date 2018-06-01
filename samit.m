@@ -22,7 +22,7 @@ function varargout = samit(varargin)
 
 % Edit the above text to modify the response to help samit
 
-% Last Modified by GUIDE v2.5 23-Oct-2017 15:08:12
+% Last Modified by GUIDE v2.5 29-Nov-2017 16:14:15
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -58,7 +58,11 @@ handles.output = hObject;
 %% Update handles structure and visibility
 
 % List of available atlases
-AtlasList = readtable('samit_atlases.txt');
+AtlasList = readtable('samit_atlases.txt', ...
+    'ReadVariableNames', true, ...
+    'Delimiter',',', ...
+    'Format','%s %s %s %s %s %s %s', ...
+    'CommentStyle',{'//'});
 handles.AtlasList = AtlasList.AtlasName;
 handles.atlas   = 'none';  % Creates handles.atlas variable
 handles.gs      = 5.5;     % Creates handles.gs (Defaults glucose: 5.5)
@@ -67,19 +71,20 @@ handles.regType = 'rigid'; % Regularisation type
 handles.nType   = 'SUV';   % Standarization procedure of the uptake
 handles.fixType = 'center';% Standarization procedure of the uptake
 
-% Update GUI with Atlas info
+% Update UI with Atlas info
 X = {};
 X{1} = get(handles.tag_atlas_popup,'String');
 for i=1:size(AtlasList,1)
-    X{i+1} = [AtlasList.AtlasName{i},' - ', AtlasList.Details{i}];
+    X{i+1} = [AtlasList.AtlasName{i},' - ', AtlasList.Specie{i}];
 end
+X{i+2} = 'Create New Atlas...';
 
 set(handles.tag_atlas_popup,'String',X);
 set(findall(handles.tag_tools,'-property','Enable'),'Enable','off');
 set(findall(handles.tag_templates,'-property','Enable'),'Enable','off');
 set(findall(handles.tag_analysis,'-property','Enable'),'Enable','off');
 
-
+% SPM information
 global defaults            % Allows to open samit without SPM running
 if isempty(defaults) || ~isfield(defaults,'modality')
     spm('defaults','PET');
@@ -88,8 +93,12 @@ handles.modality = spm('CheckModality'); % Saves SPM modality
 clear defaults
 guidata(hObject, handles);
 
+if ~(exist('spm_normalise.m')) % Starting at SPM12 spm_normalise is located in OldNorm folder
+    addpath([fileparts(which('spm')), filesep, 'toolbox', filesep, 'OldNorm'])
+end
+
 % UIWAIT makes samit wait for user response (see UIRESUME)
-% uiwait(handles.figure1);
+% uiwait(handles.samit_ui);
 
 % ---- Add samit toolbox pathway -----
 mypath = fileparts(which('samit'));
@@ -106,31 +115,31 @@ disp('Small Animal Molecular Imaging Toolbox (SAMIT)');
 disp('==============================================');
 disp(' ');
 
-% % --- Splash Screen ---
-% % Shows splash screen  
-% WS   = spm('WinScale');		% Window scaling factors
-% X = imread(fullfile(mypath,'images','NGMBlogo.png'));
-% aspct = size(X,1) / size(X,2);
-% ww = 400;
-% srect = [200 300 ww ww*aspct] .* WS;   % Scaled size splash rectangle
-% h = figure('visible','off',...
-% 	       'menubar','none',...
-% 	       'numbertitle','off',...
-% 	       'name','Welcome to SAMIT',...
-% 	       'pos',srect);
-% im = image(X);
-% %colormap(map);
-% ax = get(im, 'Parent');
-% axis off;
-% axis image;
-% axis tight;
-% set(ax,'plotboxaspectratiomode','manual',...
-%        'unit','pixels',...
-%        'pos',[0 0 srect(3:4)]);
-% set(h,'visible','on');
-% pause(3);
-% close(h);
-% % --- end splash
+% --- Splash Screen ---
+% Shows splash screen  
+WS   = spm('WinScale');		% Window scaling factors
+X = imread(fullfile(mypath,'images','NGMBlogo.png'));
+aspct = size(X,1) / size(X,2);
+ww = 400;
+srect = [200 300 ww ww*aspct] .* WS;   % Scaled size splash rectangle
+h = figure('visible','off',...
+	       'menubar','none',...
+	       'numbertitle','off',...
+	       'name','Welcome to SAMIT',...
+	       'pos',srect);
+im = image(X);
+%colormap(map);
+ax = get(im, 'Parent');
+axis off;
+axis image;
+axis tight;
+set(ax,'plotboxaspectratiomode','manual',...
+       'unit','pixels',...
+       'pos',[0 0 srect(3:4)]);
+set(h,'visible','on');
+pause(3);
+close(h);
+% --- end splash
 
 % ---- NGMB Logo ----
 logo = imread(fullfile(mypath,'images','NGMBlogo2.png')); % Read logo image
@@ -183,7 +192,12 @@ switch val
         set(findall(handles.tag_templates,'-property','Enable'),'Enable','off');
         set(findall(handles.tag_analysis,'-property','Enable'),'Enable','off');
         handles.atlas = 'none';
-
+    
+    case size(handles.AtlasList,1)+2 % Last entry : Create new atlas
+        samit_mip_ui;
+        samit_ui_CloseRequestFcn(hObject, eventdata, handles); % Closes SAMIT
+        return
+       
     otherwise
         set(findall(handles.tag_tools,'-property','Enable'),'Enable','on');
         set(findall(handles.tag_templates,'-property','Enable'),'Enable','on');
@@ -451,9 +465,9 @@ samit_VOI(handles.atlas);
 
 % ========== Close SAMIT =================
 
-% --- Executes when user attempts to close figure1.
-function figure1_CloseRequestFcn(hObject, eventdata, handles)
-% hObject    handle to figure1 (see GCBO)
+% --- Executes when user attempts to close samit_ui.
+function samit_ui_CloseRequestFcn(hObject, eventdata, handles)
+% hObject    handle to samit_ui (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
@@ -474,4 +488,5 @@ global defaults;
 defaults = spm_get_defaults;
 spm('defaults',handles.modality);
 spm_jobman('initcfg');
-delete(hObject);
+%delete(hObject);
+delete(handles.samit_ui);

@@ -73,17 +73,8 @@ switch ext
         
         % Header is excluded
         txt = C(2:end,1);       % Names of files
-        num0 = strrep(C(2:end,2:end), ',', '.'); % Values ('comma' is replaced for 'period')
-        
-        % Cell matrix to num
-        num = zeros(size(num0));
-        for i = 1:size(num0,1)
-            for j = 1:size(num0,2)
-                %num(i,j) = str2num(num0{i,j});
-                num(i,j) = isnumeric(str2num(num0{i,j}));
-            end
-        end
-
+        num = strrep(C(2:end,2:end), ',', '.'); % Values ('comma' is replaced for 'period')
+        num = cellfun(@str2num, num); % Cell matrix to num
               
     case 'xls'      % Excel file
         
