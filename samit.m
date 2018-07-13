@@ -93,7 +93,7 @@ handles.modality = spm('CheckModality'); % Saves SPM modality
 clear defaults
 guidata(hObject, handles);
 
-if ~(exist('spm_normalise.m')) % Starting at SPM12 spm_normalise is located in OldNorm folder
+if ~exist('spm_normalise.m') % Starting at SPM12 spm_normalise is located in OldNorm folder
     addpath([fileparts(which('spm')), filesep, 'toolbox', filesep, 'OldNorm'])
 end
 
@@ -105,9 +105,6 @@ mypath = fileparts(which('samit'));
 addpath(mypath);
 spm_select('prevdirs',mypath);
 
-% ---- Load samit defaults -----
-%samit_defaults;
-   
 
 %% Welcome message
 disp(' ');
