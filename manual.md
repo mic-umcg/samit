@@ -109,6 +109,7 @@ The only required files to create a new atlas set are 1) the MR image and 2) a b
 - Ma et al., 2005. A three-dimensional digital atlas database of the adult C57BL/6J mouse brain by magnetic resonance microscopy. Neuroscience, 135(4) (doi: [10.1016/j.neuroscience.2005.07.014](http://dx.doi.org/10.1016/j.neuroscience.2005.07.014))
 - Ma, Y. et al., 2008. In Vivo 3D Digital Atlas Database of the Adult C57BL/6J Mouse Brain by Magnetic Resonance Microscopy. Frontiers in neuroanatomy, 2(April) (doi: [10.3389/neuro.05.001.2008](http://dx.doi.org/10.3389/neuro.05.001.2008))
 - Schwarz et al., 2006 A stereotaxic MRI template set for the rat brain with tissue class distribution maps and co-registered anatomical atlas: application to pharmacological MRI. NeuroImage 32(2) (doi: [10.1016/j.neuroimage.2006.04.214](http://dx.doi.org/10.1016/j.neuroimage.2006.04.214))
+- Saikali S, Meurice P, Sauleau P, Eliat PA, Bellaud P, Randuineau G, Vérin M, Malbert CH. A three-dimensional digital segmented and deformable brain atlas of the domestic pig. J Neurosci Methods. 2010; 192(1):102-9. doi: [10.1016/j.jneumeth.2010.07.041](http://dx.doi.org/10.1016/j.jneumeth.2010.07.041)
 
 ## SAMIT and tracer-specific templates
 - Vállez Garcia et al., 2015. A Standardized Method for the Construction of Tracer Specific PET and SPECT Rat Brain Templates: Validation and Implementation of a Toolbox. PLoS One, 10(3) (doi: [10.1371/journal.pone.0122363](http://dx.doi.org/10.1371/journal.pone.0122363))
