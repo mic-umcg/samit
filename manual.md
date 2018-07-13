@@ -11,7 +11,7 @@ The toolbox is intended to work in combination with the Statistical Parametric M
 
 ## Select Atlas
 The very first step is to select the desired animal atlas. This step is needed to populate some predefined values and to allow the interaction with the rest of the options.
-The last option on the drop-down menu is ‘Create a new atlas…’. The details about this function to include new atlases and templates is explained later in this manual (see How to Include a New Atlas).
+The last option on the drop-down menu is `Create a new atlas…`. The details about this function to include new atlases and templates is explained later in this manual (see How to Include a New Atlas).
 
 
 ## Image pre-processing
@@ -56,7 +56,7 @@ A new image will be created by removing the signal from outside of the brain. Th
 The purpose of this section is to facilitate the extraction of the descriptive values from the images, which can be further used for statistics analysis. The program will ask you for the image containing the Volumes of Interest (VOIs), and then will ask for the image(s) from where the values want to be calculated. The results will be saved in a tabulated text file (\*.txt) and in a Matlab file (\*.mat).
 >**Important:** The extraction of the results will proceed even if the files had different orientation or dimensions than the VOIs. Its recommend to use only images already aligned and with the same dimensions than the desired SAMIT template. The results obtained with images with different orientations and/or dimensions might not be correct!!
 
-## Templates
+# Templates
 The construction process to obtain tracer-specific PET and SPECT templates have been automatized as described in [Vallez Garcia et al. 2015](http://dx.doi.org/10.1371/journal.pone.0122363). The program assumes that the images are already aligned between them in space and uptake (e.g. in PMOD software and then reoriented to SPM). The first image selected in the list will be used as the reference image, and all the other images will be aligned to this one in the first step of the template construction.
 >**Note:** It is recommended to check the images that will be used for the construction of the template with Check Image Registration (`Check Reg`) in SPM, to select the most appropriate reference image and to confirm that the images are correctly aligned between them.
 >It is also recommended to use images with a bigger dimension than the one of the reference MRI. This will allow later the construction of templates with different sizes, and it will avoid regions with zeros or NaN in the image.
@@ -76,6 +76,31 @@ Several files will be created when the construction of the template is completed
 - *NameTemplate_Original_Size.nii* A version of the template but that preserves the original dimensions of the images. The co-registration matrix is stored in the file, but the image is not resliced. This image can be used for the construction of other versions of the template with different dimension size.
 
 The evaluation of the registration accuracy of the images to the template can be performed by selecting `Evaluation of the template`. The previously constructed template must be selected (\*_MRI_Size.nii) followed by the new version of the images used for the construction of the template.
+
+## How to Include a New Atlas
+Starting with version 1.3, the toolbox includes a new functionality to facilitate the addition of new small animal atlases to SAMIT. This option can be accessed by selecting `Create a new atlas…`, the last option of the drop-down menu *Select small animal atlas*. 
+When this option is selected, a new interface will be displayed. The usage is quite intuitive, and it requires to follow the options from the top to the bottom of the interface.
+The only required files to create a new atlas set are 1) the MR image and 2) a binary brain mask. This images must comply with SPM orientation requirements (see [Appendix. Image Orientation]).
+1. **Load Image**. First of all, select the brain image that will be used to draw the contour of the brain. This image will be used in the display of the results of SPM, the so-called ‘glass brain’ or ‘maximum intensity projection’ (MIP) image.
+>Note: While some options are provided to adjust the drawing, for optimal results we recommend to use the image presenting a binary mask of the brain or the MR.
+2. **Create MIP**. Adjust the display of the contour.
+   1. *Margin*. This option can be used to adjust the zoom of the image, by adjusting the margins between the subpanels.
+   2.	*Threshold*. When the MR is used, for example, this option allows defining the contour of the image based on the intensity of the image
+   3. *Canny Upper & Canny Lower*. If the ‘Auto edge limits’ option is not active, this two parameters can be used for fine adjustments of the contour.
+3. **Save MIP & Atlas**. Here you can define the details about the new atlas.
+   1. *Animal Species*. For example, rat or mice (no spaces allowed).
+   2. *Atlas Name*. For example, Schwarz (no spaces allowed)
+   3.	*Atlas Details*. Short description about the atlas (spaces allowed).
+   4.	*Atlas MR Image*. MR image that will be used as the reference for co-registration when a new PET/SPECT template is constructed.
+   5.	*Atlas Brain Mask*. Binary image that will be used for brain masking.
+4. **Create New Atlas**. When all you are satisfied with the MIP and the details of the atlas, this button will create the needed files, and the new atlas will be included in your SAMIT installation.
+
+### Basic information used for the atlases:
+- **samit_atlas.txt** This file is read by SAMIT to populate the menu with the available atlases. When a new atlas is created, a new entry will be automatically generated. If you want to avoid that a specific atlas is loaded by SAMIT, comment the line using //.
+-	**MIP.mat** Maximum intensity image used for visualization of the results in SPM
+-	**‘mask’ folder** It will contain a copy of the ‘Atlas Brain Mask’ selected earlier. This folder can be used to store different masks, according to the needs of each research group.
+-	**‘templates’ folder** Its purpose is to contain the ‘Atlas MR image’ as selected earlier and all the future PET/SPECT tracer-specific templates related with this MR atlas.
+-	**VOIs’ folder** Its purpose is to contain different sets of VOIs, which can be used in combination with the ‘VOI analysis’ function of SAMIT.
 
 
 # References
