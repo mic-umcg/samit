@@ -3,28 +3,32 @@ layout: page
 title: SAMIT Manual
 ---
 # Manual
-The aim of this toolbox is to facilitate the voxel-based and volume-based analysis, and the automatized construction of new tracer-specific templates for small animal PET and SPECT brain images.
-The toolbox is intended to work in combination with Statistical Parametric Mapping ([SPM]) software, and most of the SAMIT functions require the presence of this software in the [MATLAB] environment.
+The aim of this toolbox is to facilitate the voxel-based and volume-based analysis, and the automatized construction of new tracer-specific templates for small animal positron emission tomography (PET) and single-photon emission computed tomography (SPECT) brain images.
+The toolbox is intended to work in combination with the Statistical Parametric Mapping ([SPM]) software, and most of the SAMIT functions require the presence of this software in the [MATLAB] environment.
 
 <img src="{{ site.baseurl }}/images/samit1.3.png" alt="SAMIT interface" style="align:right;float:right;width:30%;margin:1em">
 
 
 ## Select Atlas
-The very first step to use SAMIT is to select the desired animal atlas. This step is used to populate some default values and to allow the interaction with the rest of the options.
+The very first step is to select the desired animal atlas. This step is needed to populate some predefined values and to allow the interaction with the rest of the options.
+The last option on the drop-down menu is ‘Create a new atlas…’. The details about this function to include new atlases and templates is explained later in this manual (see How to Include a New Atlas).
+
 
 ## Image pre-processing
 
 ### Spatial normalization
-1. **Reorient**. This option allows reorienting images that were previously registered using other software packages, e.g. [PMOD] or [VINCI]. It allows basic operations such as to relocate the coordinates system of the image or reorient the image in the direction expected by SPM.
+1. **Reorient**. This option allows to reorienting images that were previously registered in other software packages, e.g. [PMOD] or [VINCI]. Includes basic operations such as to relocate the coordinates system or to reorient the image as expected by [SPM] (read Appendix. Image Orientation for further details).
    - *PMOD2SPM*: This option allows to reorient the images created in PMOD to the orientation expected in SPM.
    - *SPM2PMOD*: In this case, the images in SPM space are reoriented into PMOD space.
    - *VINCI*: The NIfTI files created in VINCI present an error in the stored transformation matrix, which can cause problems with the voxel size and the orientation in SPM. This simple fix solves the issue.
-   - *Bregma*: The location of the coordinates system in the images are a crucial step while handling the images. The zero or "origin" of the coordinates system is located in frequently located in bregma in the small animals, but not all the animal template follow this recommendation.
-   - *Center*: If bregma is not properly defined in the atlas, the center of the image is a good alternative for coordinates system.
+   - *Bregma*: The proper location of the coordinates system in the image is crucial when handling the images. The zero or “origin” of the coordinates system is frequently located in bregma in small animals, but not all the animal template follow this recommendation.
+   - *Center*: If bregma is not properly defined with the atlas information, the center of the image is a good alternative as a reference in the coordinates system.
 2. **Spatial registration**. This section of the toolbox use the normalization process implemented in SPM8, and allows the selection of multiple images at once.
    - Registration type (for further details see 'spm_affreg' from SPM)
    - Normalize multiple images
-> ***Notes***: This step is not necessary if the images were previously aligned to the template in another software package  (e.g. PMOD or VINCI). The best results are obtained when the images and the reference template have similar dimensions and a good initial overlap.
+> ***Notes***: The registration step is not necessary if the images were previously aligned to the template in another software package  (e.g. PMOD or VINCI). If that is the case, only the reorientation is needed.
+The best results are obtained when the images and the reference template have similar dimensions and a good initial overlap.
+
 
 ### Normalize uptake
 This section allows the normalization of the uptake values in multiple images. The procedure has two steps:
@@ -46,15 +50,16 @@ This section allows the normalization of the uptake values in multiple images. T
     4. *Create normalized images*. The new images will be created according to the parameters selected and the information probided in the file (table).
 
 ### Apply whole brain mask
-A new image will be created removing the signal from the outside of the brain. The brain mask will be selected automatically according to the default parameters of the atlas. The new constructed images will have the prefix **m**.
+A new image will be created by removing the signal from outside of the brain. The brain mask will be selected automatically according to the default parameters of the atlas (samit_atlases.txt). The new constructed images will have the prefix **m**.
 
-## VOI Analysis
+## Analysis
 The purpose of this section is to facilitate the extraction of the descriptive values from the images, which can be further used for statistics analysis. The program will ask you for the image containing the Volumes of Interest (VOIs), and then will ask for the image(s) from where the values want to be calculated. The results will be saved in a tabulated text file (\*.txt) and in a Matlab file (\*.mat).
 >**Important:** The extraction of the results will proceed even if the files had different orientation or dimensions than the VOIs. Its recommend to use only images already aligned and with the same dimensions than the desired SAMIT template. The results obtained with images with different orientations and/or dimensions might not be correct!!
 
 ## Templates
 The construction process to obtain tracer-specific PET and SPECT templates have been automatized as described in [Vallez Garcia et al. 2015](http://dx.doi.org/10.1371/journal.pone.0122363). The program assumes that the images are already aligned between them in space and uptake (e.g. in PMOD software and then reoriented to SPM). The first image selected in the list will be used as the reference image, and all the other images will be aligned to this one in the first step of the template construction.
 >**Note:** It is recommended to check the images that will be used for the construction of the template with Check Image Registration (`Check Reg`) in SPM, to select the most appropriate reference image and to confirm that the images are correctly aligned between them.
+>It is also recommended to use images with a bigger dimension than the one of the reference MRI. This will allow later the construction of templates with different sizes, and it will avoid regions with zeros or NaN in the image.
 
 The steps performed by the program are:
 1. Spatial normalization of the selected images to the first one.
@@ -62,6 +67,8 @@ The steps performed by the program are:
 3. Co-registration of the symmetrical image to the reference MRI template.
 4. Co-registration of the images used for the construction of the template with the parameters obtained in the previous step. This new images are saved with a prefix **r** and they can be used for the evaluation of the template.
 5. The final version of the template and its registration with the MRI is displayed.
+
+<img src="{{ site.baseurl }}/images/flow_templates.png" alt="Template Construction" stye="align:center;margin:1em">
 
 Several files will be created when the construction of the template is completed:
 - *NameTemplate_coreg.mat* The co-registration matrix obtained in the step 3
