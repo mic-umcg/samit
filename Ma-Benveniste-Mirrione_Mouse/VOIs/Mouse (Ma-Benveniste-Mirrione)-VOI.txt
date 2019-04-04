@@ -1,0 +1,22 @@
+// Mouse (Ma-Benveniste-Mirrione)
+// Derived from PMOD 3.9
+
+1	Striatum right
+2	Striatum left
+3	Cortex
+4	Hippocampus right
+5	Hippocampus left
+6	Thalamus
+7	Cerebellum
+8	Basal forebrain and septum
+9	Hypothalamus
+10	Amygdala right
+11	Amygdala left
+12	Brain stem
+13	Central gray matter
+14	Superior colliculi
+15	Olfactory bulb
+16	Midbrain right
+17	Midbrain left
+18	Inferior colliculus left
+19	Inferior colliculus right

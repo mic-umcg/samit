@@ -77,7 +77,8 @@ X{1} = get(handles.tag_atlas_popup,'String');
 for i=1:size(AtlasList,1)
     X{i+1} = [AtlasList.AtlasName{i},' - ', AtlasList.Specie{i}];
 end
-X{i+2} = 'Create New Atlas...';
+X{i+2} = 'No MRI available';
+X{i+3} = 'Create New Atlas...';
 
 set(handles.tag_atlas_popup,'String',X);
 set(findall(handles.tag_tools,'-property','Enable'),'Enable','off');
@@ -93,7 +94,7 @@ handles.modality = spm('CheckModality'); % Saves SPM modality
 clear defaults
 guidata(hObject, handles);
 
-if ~exist('spm_normalise.m') % Starting at SPM12 spm_normalise is located in OldNorm folder
+if ~exist('spm_normalise.m','file') % Starting at SPM12 spm_normalise is located in OldNorm folder
     addpath([fileparts(which('spm')), filesep, 'toolbox', filesep, 'OldNorm'])
 end
 
@@ -115,7 +116,7 @@ disp(' ');
 % --- Splash Screen ---
 % Shows splash screen  
 WS   = spm('WinScale');		% Window scaling factors
-X = imread(fullfile(mypath,'images','NGMBlogo.png'));
+X = imread(fullfile(mypath,'images','MIClogo.jpg'));
 aspct = size(X,1) / size(X,2);
 ww = 400;
 srect = [200 300 ww ww*aspct] .* WS;   % Scaled size splash rectangle
@@ -139,7 +140,7 @@ close(h);
 % --- end splash
 
 % ---- NGMB Logo ----
-logo = imread(fullfile(mypath,'images','NGMBlogo2.png')); % Read logo image
+logo = imread(fullfile(mypath,'images','MIClogo.jpg')); % Read logo image
 image(logo);
 axis off;
 axis image;
@@ -186,23 +187,39 @@ val = get(handles.tag_atlas_popup, 'Value');
 switch val
     case 1 % No selection
         set(findall(handles.tag_tools,'-property','Enable'),'Enable','off');
-        set(findall(handles.tag_templates,'-property','Enable'),'Enable','off');
         set(findall(handles.tag_analysis,'-property','Enable'),'Enable','off');
+        set(findall(handles.tag_templates,'-property','Enable'),'Enable','off');        
         handles.atlas = 'none';
     
-    case size(handles.AtlasList,1)+2 % Last entry : Create new atlas
+    case size(handles.AtlasList,1)+2 % When no MRI is available but PET template is needed        
+        set(findall(handles.tag_reorient,'-property','Enable'),'Enable','on');
+        set(handles.tag_reorient_run,'Enable','off');
+        set(findall(handles.tag_spatial_registration,'-property','Enable'),'Enable','off');
+        
+        set(findall(handles.tag_uptake,'-property','Enable'),'Enable','on');
+        set(handles.tag_uptake_gs,'Enable','off');
+        set(handles.tag_uptake_create,'Enable','off');
+                
+        set(findall(handles.tag_mask,'-property','Enable'),'Enable','off');
+        
+        set(findall(handles.tag_analysis,'-property','Enable'),'Enable','off');
+        set(findall(handles.tag_templates,'-property','Enable'),'Enable','on');
+        handles.atlas = 'none';
+    
+    case size(handles.AtlasList,1)+3 % Last entry : Create new atlas
         samit_mip_ui;
         samit_ui_CloseRequestFcn(hObject, eventdata, handles); % Closes SAMIT
         return
        
     otherwise
         set(findall(handles.tag_tools,'-property','Enable'),'Enable','on');
-        set(findall(handles.tag_templates,'-property','Enable'),'Enable','on');
-        set(findall(handles.tag_analysis,'-property','Enable'),'Enable','on');
         set(handles.tag_reorient_run,'Enable','off');
         set(handles.tag_multiNormalise,'Enable','off');
-        set(handles.tag_uptake_create,'Enable','off');
         set(handles.tag_uptake_gs,'Enable','off');
+        set(handles.tag_uptake_create,'Enable','off');
+        
+        set(findall(handles.tag_analysis,'-property','Enable'),'Enable','on');
+        set(findall(handles.tag_templates,'-property','Enable'),'Enable','on');        
         
         handles.atlas = handles.AtlasList{val-1};
         samit_defaults(handles.atlas);
