@@ -13,7 +13,7 @@ It is helpful for us to know about the potential users of the toolbox. Therefore
 * Any additional comments are will be emailed directly to the developers of the toolbox.
 * Submitting the form will take you to the page with the latest version of the SAMIT software.
 
-<form action="http://formspree.io/d.vallez-garcia@umcg.nl" method="POST">
+<form action="https://formspree.io/d.vallez-garcia@umcg.nl" method="POST">
   <input type="hidden" name="_subject" value="SAMIT: New form" />
 <!-- Not working yet with SAMIT email address
   <input type="hidden" name="_cc" value="samit@umcg.nl" /> 
@@ -29,7 +29,7 @@ It is helpful for us to know about the potential users of the toolbox. Therefore
   </p>
   
   <p>
-  Do you want to be including in a mail-list for updates?<br>
+  Do you want to be included in a mail-list for updates?<br>
   <input type="radio" name="mail-list" value="Yes">Yes<br>
   <input type="radio" name="mail-list" value="No" checked>No<br>
   </p>
