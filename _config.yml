@@ -19,7 +19,7 @@ author:
   email:             samit@umcg.nl
 
 # Custom vars
-version:             v1.3beta
+version:             v1.3.1
 zenodo:              https://zenodo.org/record/14785
 
 # Exclude these files from _site
