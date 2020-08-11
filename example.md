@@ -46,7 +46,7 @@ This process will relocate the origin in a position of the image close to where 
 10. Apply smoothing to the image:
    - Click in `Smooth` button from the SPM interface
    - Select the images to smooth (i.e. those with the prefix **m**)
-   - Select the desired FWHM. For this example we can leave the default value of 0.12 mm (i.e. recommend values are between 0.8 and 0.12 mm for rat studies)
+   - Select the desired FWHM. For this example we can leave the default value of 1.2 mm (i.e. recommend values are between 0.8 and 0.12 mm for rat studies)
    - Select *Implicit masking* to *Yes*. This will avoid the smoothing to go outside the masked region
    - Run the batch: Click on the icon of a green arrow or select `File > Run Batch`
    - The new images will be located in the same folder than the previous ones with the prefix **s**. These are the final images to be used in the voxel-based analysis
